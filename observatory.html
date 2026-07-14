@@ -12,33 +12,255 @@
 <link rel="stylesheet" href="hheuristics-tokens.css">
 <link rel="stylesheet" href="hheuristics-components.css">
 <link rel="stylesheet" href="site.css">
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 <style>
-  .viz-wrapper {
+  /* Chart-specific styles */
+  #bubble-chart-wrap {
     background: #f8f9fb;
-    padding: var(--space-4);
+    border: 1px solid var(--border-subtle);
+    position: relative;
   }
-  .viz-instructions {
+
+  .chart-toolbar {
     display: flex;
-    gap: var(--space-4);
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
-    margin-bottom: var(--space-4);
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    background: #fff;
+  }
+
+  .chart-toolbar .btn-group {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .chart-toolbar .metric-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border: 1px solid var(--border-default);
+    background: #fff;
+    color: var(--text-secondary);
+    border-radius: 5px;
+    cursor: pointer;
     font-family: var(--font-body);
-    font-size: var(--text-sm);
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .chart-toolbar .metric-btn:hover {
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+  }
+
+  .chart-toolbar .metric-btn.active {
+    background: var(--color-brand);
+    color: #fff;
+    border-color: var(--color-brand);
+  }
+
+  .chart-toolbar .ctrl-btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border: 1px solid var(--border-default);
+    background: #fff;
+    color: var(--text-secondary);
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .chart-toolbar .ctrl-btn:hover {
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+    background: var(--hh-navy-50);
+  }
+
+  .chart-toolbar .ctrl-btn.active-ctrl {
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .chart-toolbar .ctrl-btn.play-btn {
+    min-width: 80px;
+  }
+
+  .chart-area {
+    padding: 0.5rem 0.75rem 0 0.75rem;
+    position: relative;
+  }
+
+  .year-display {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    min-width: 60px;
+  }
+
+  .year-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    background: var(--border-default);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    margin: 0.4rem 0;
+  }
+
+  .year-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-brand);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+
+  .year-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.75rem 0.5rem;
+  }
+
+  .legend-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0.3rem 0.75rem 0.6rem;
+    font-size: 0.7rem;
+    font-family: var(--font-body);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+
+  .legend-item:hover {
+    background: var(--hh-navy-50);
+  }
+
+  .legend-item.active-leg {
+    background: var(--color-accent-soft);
+  }
+
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .viz-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(12, 25, 41, 0.94);
+    color: #fff;
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    font-family: var(--font-body);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    z-index: 100;
+    max-width: 250px;
+    opacity: 0;
+    transition: opacity 0.12s;
+  }
+
+  .viz-tooltip.visible { opacity: 1; }
+
+  .viz-tooltip .tt-country {
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+    color: var(--color-accent);
+  }
+
+  .viz-tooltip .tt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .viz-tooltip .tt-label { color: #8899aa; }
+  .viz-tooltip .tt-val { font-weight: 600; }
+
+  /* KPI mini cards */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .kpi-mini {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+
+  .kpi-mini__label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
     color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
   }
-  .viz-instructions span {
-    display: flex; align-items: center; gap: var(--space-1);
+
+  .kpi-mini__value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-brand);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
   }
-  .viz-instructions .key-icon {
-    display: inline-block; width: 18px; height: 18px;
-    border-radius: 3px; background: var(--color-brand);
-    color: var(--text-inverse); text-align: center;
-    font-size: 10px; line-height: 18px; font-weight: 700;
+
+  .kpi-mini__change {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 0.1rem;
+    color: var(--hh-success);
+  }
+
+  @media (max-width: 768px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .chart-toolbar { flex-direction: column; align-items: flex-start; }
+    .year-display { font-size: 1.5rem; }
   }
 </style>
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════
+     MASTHEAD
+     ═══════════════════════════════════════════ -->
 <div class="masthead-wrap">
   <header class="masthead">
     <a href="index.html" class="masthead__brand">
@@ -55,6 +277,9 @@
   </header>
 </div>
 
+<!-- ═══════════════════════════════════════════
+     PAGE HEADER
+     ═══════════════════════════════════════════ -->
 <div class="page">
   <header class="page-header">
     <p class="page-header__kicker">Interactive Visualization</p>
@@ -65,22 +290,90 @@
 
 <div class="hairline hairline--gold"></div>
 
+<!-- ═══════════════════════════════════════════
+     KPI CARDS
+     ═══════════════════════════════════════════ -->
 <div class="page page--wide">
-  <div class="viz-instructions">
-    <span><span class="key-icon">▶</span> Press Play to animate</span>
-    <span><span class="key-icon" style="background:var(--color-accent);">↔</span> Drag slider to scrub</span>
-    <span><span class="key-icon" style="background:var(--hh-viz-teal);">🖱</span> Hover for details</span>
-    <span><span class="key-icon" style="background:var(--hh-viz-purple);">🔍</span> Click legend to filter</span>
+  <div class="kpi-row">
+    <div class="kpi-mini">
+      <div class="kpi-mini__label">Global Internet</div>
+      <div class="kpi-mini__value" id="kpi-internet">—</div>
+      <div class="kpi-mini__change" id="kpi-internet-change"></div>
+    </div>
+    <div class="kpi-mini">
+      <div class="kpi-mini__label">Mobile /100 People</div>
+      <div class="kpi-mini__value" id="kpi-mobile">—</div>
+      <div class="kpi-mini__change" id="kpi-mobile-change"></div>
+    </div>
+    <div class="kpi-mini">
+      <div class="kpi-mini__label">Broadband /100</div>
+      <div class="kpi-mini__value" id="kpi-broadband">—</div>
+      <div class="kpi-mini__change" id="kpi-broadband-change"></div>
+    </div>
+    <div class="kpi-mini">
+      <div class="kpi-mini__label">Countries Online</div>
+      <div class="kpi-mini__value" id="kpi-countries">—</div>
+      <div class="kpi-mini__change" style="color:var(--text-muted);" id="kpi-countries-change"></div>
+    </div>
   </div>
 
-  <div class="viz-wrapper">
-    <iframe src="viz/index.html" class="viz-embed viz-embed--tall" title="Gapminder Bubble Chart — Global Diffusion Observatory" sandbox="allow-scripts allow-same-origin" loading="lazy"></iframe>
+  <!-- ═══════════════════════════════════════
+       BUBBLE CHART
+       ═══════════════════════════════════════ -->
+  <div id="bubble-chart-wrap">
+
+    <!-- Toolbar -->
+    <div class="chart-toolbar">
+      <div class="btn-group">
+        <span style="font-size:0.7rem;font-weight:600;color:var(--text-muted);margin-right:0.2rem;">METRIC:</span>
+        <button class="metric-btn active" data-m="internet_pct">Internet %</button>
+        <button class="metric-btn" data-m="mobile_per_100">Mobile /100</button>
+        <button class="metric-btn" data-m="broadband_per_100">Broadband /100</button>
+      </div>
+      <div class="btn-group">
+        <button class="ctrl-btn" id="btn-log">Log Scale</button>
+        <button class="ctrl-btn" id="btn-trails">Trails: Off</button>
+        <button class="ctrl-btn" id="btn-highlight">All Regions</button>
+      </div>
+    </div>
+
+    <!-- Chart SVG Area -->
+    <div class="chart-area" id="chart-container">
+      <svg id="bubble-chart"></svg>
+      <div class="viz-tooltip" id="tooltip">
+        <div class="tt-country"></div>
+        <div class="tt-row"><span class="tt-label">GDP/Capita</span><span class="tt-val" id="tt-gdp"></span></div>
+        <div class="tt-row"><span class="tt-label">Population</span><span class="tt-val" id="tt-pop"></span></div>
+        <div class="tt-row"><span class="tt-label">Metric</span><span class="tt-val" id="tt-metric"></span></div>
+      </div>
+    </div>
+
+    <!-- Year Controls -->
+    <div class="year-controls">
+      <button class="ctrl-btn play-btn" id="btn-play" style="font-size:0.8rem;">▶ Play</button>
+      <button class="ctrl-btn" onclick="stepYear(-1)" style="font-size:0.85rem;">◀</button>
+      <button class="ctrl-btn" onclick="stepYear(1)" style="font-size:0.85rem;">▶</button>
+      <span style="font-size:0.7rem;color:var(--text-muted);margin-left:0.3rem;">Speed:</span>
+      <select id="speed-select" style="font-size:0.7rem;padding:0.2rem 0.3rem;border:1px solid var(--border-default);border-radius:4px;font-family:var(--font-body);">
+        <option value="2000">Slow</option>
+        <option value="800" selected>Normal</option>
+        <option value="300">Fast</option>
+        <option value="100">Turbo</option>
+      </select>
+      <div style="flex:1;"></div>
+      <div class="year-display" id="year-display">1990</div>
+    </div>
+    <input type="range" class="year-slider" id="year-slider" min="1960" max="2023" value="1990" step="1" oninput="setYear(this.value)">
+
+    <!-- Region Legend -->
+    <div class="legend-row" id="region-legend"></div>
   </div>
 
-  <div class="callout" style="margin-top: var(--space-8);">
+  <!-- How-to Callout -->
+  <div class="callout" style="margin-top: var(--space-6);">
     <p class="callout__heading">How to Use This Chart</p>
     <p class="callout__text">
-      <strong>Y-axis:</strong> Toggle between Internet Users (%), Mobile Subscriptions (per 100), and Fixed Broadband (per 100). <strong>X-axis:</strong> GDP per capita (PPP) with a logarithmic scale — toggle to linear if preferred. <strong>Animation:</strong> Press Play to watch countries move up and right over time, tracing the path of development and technology adoption. <strong>Trails:</strong> Enable to see each country's 15-year trajectory. <strong>Region Filter:</strong> Click any region in the legend to isolate it, or cycle through all regions with the highlight button.
+      <strong>Press Play</strong> to animate through 64 years. <strong>Hover</strong> any bubble for details. <strong>Toggle metrics</strong> to switch between Internet, Mobile, and Broadband. <strong>Click regions</strong> in the legend to isolate them. <strong>Enable Trails</strong> to see each country's 15-year trajectory. <strong>Drag the slider</strong> to scrub to any year.
     </p>
   </div>
 </div>
@@ -102,5 +395,391 @@
     <div class="footer-brand__bottom">&copy; 2026 H Heuristics.</div>
   </div>
 </footer>
+
+<!-- ═══════════════════════════════════════════
+     D3.js BUBBLE CHART — INLINE
+     ═══════════════════════════════════════════ -->
+<script>
+// ============================================================
+// GLOBAL DIFFUSION OBSERVATORY — Gapminder Bubble Chart
+// H Heuristics — D3.js v7 — Inline Integration
+// ============================================================
+
+// --- Constants ---
+const REGION_COLORS = {
+  africa: "#FF6B35", asia: "#004E89", east_asia_pacific: "#1A936F",
+  europe: "#4269D0", north_america: "#9B5DE5", latin_america: "#F9C74F",
+  middle_east: "#00B4D8", other: "#8B949E"
+};
+
+const REGION_LABELS = {
+  africa: "Sub-Saharan Africa", asia: "South Asia",
+  east_asia_pacific: "East Asia & Pacific", europe: "Europe & Central Asia",
+  north_america: "North America", latin_america: "Latin America & Caribbean",
+  middle_east: "Middle East & North Africa", other: "Other"
+};
+
+const METRIC_LABELS = {
+  internet_pct: "Internet Users (% of population)",
+  mobile_per_100: "Mobile Cellular Subscriptions (per 100 people)",
+  broadband_per_100: "Fixed Broadband Subscriptions (per 100 people)"
+};
+
+// --- State ---
+const state = {
+  year: 1990, metric: "internet_pct", playing: false, speed: 800,
+  logScale: true, trails: false, highlightRegion: null,
+  data: [], yearData: {}, countries: [], summary: [], timer: null,
+};
+
+let svg, g, xScale, yScale, rScale, colorScale;
+const margin = { top: 10, right: 40, bottom: 50, left: 60 };
+let width, height;
+
+// --- Load Data ---
+async function loadData() {
+  const [dataRaw, metaRaw] = await Promise.all([
+    fetch("viz/_file/diffusion_data.71af4842.json").then(r => r.json()),
+    fetch("viz/_file/country_meta.2fc3c113.json").then(r => r.json())
+  ]);
+
+  state.data = dataRaw;
+  state.countries = metaRaw;
+
+  state.yearData = {};
+  dataRaw.forEach(d => {
+    if (!state.yearData[d.year]) state.yearData[d.year] = [];
+    state.yearData[d.year].push(d);
+  });
+
+  const yearlyMap = {};
+  dataRaw.forEach(d => {
+    const y = d.year;
+    if (!yearlyMap[y]) yearlyMap[y] = { year: y, tp: 0, wi: 0, wm: 0, wb: 0, ci: 0, cm: 0, cb: 0 };
+    yearlyMap[y].tp += d.population || 0;
+    if (d.internet_pct > 0) { yearlyMap[y].ci++; yearlyMap[y].wi += d.internet_pct * (d.population || 0); }
+    if (d.mobile_per_100 > 0) { yearlyMap[y].cm++; yearlyMap[y].wm += d.mobile_per_100 * (d.population || 0); }
+    if (d.broadband_per_100 > 0) { yearlyMap[y].cb++; yearlyMap[y].wb += d.broadband_per_100 * (d.population || 0); }
+  });
+  state.summary = Object.values(yearlyMap).map(y => ({
+    year: y.year,
+    weighted_internet_pct: y.tp > 0 ? +(y.wi / y.tp).toFixed(2) : 0,
+    weighted_mobile_per_100: y.tp > 0 ? +(y.wm / y.tp).toFixed(2) : 0,
+    weighted_broadband_per_100: y.tp > 0 ? +(y.wb / y.tp).toFixed(2) : 0,
+    countries_with_internet: y.ci, countries_with_mobile: y.cm, countries_with_broadband: y.cb,
+  })).sort((a, b) => a.year - b.year);
+
+  console.log(`Loaded ${dataRaw.length} rows × ${metaRaw.length} countries`);
+}
+
+// --- Init Chart ---
+function initChart() {
+  const container = document.getElementById("chart-container");
+  const bb = container.getBoundingClientRect();
+  width = bb.width;
+  height = Math.max(500, Math.min(680, width * 0.58));
+
+  svg = d3.select("#bubble-chart").attr("width", width).attr("height", height).style("display", "block");
+  svg.selectAll("*").remove();
+
+  g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+  const iw = width - margin.left - margin.right;
+  const ih = height - margin.top - margin.bottom;
+
+  // Scales
+  if (state.logScale) {
+    xScale = d3.scaleLog().domain([300, 150000]).range([0, iw]);
+  } else {
+    xScale = d3.scaleLinear().domain([0, 120000]).range([0, iw]);
+  }
+
+  const yMax = state.metric === "mobile_per_100" ? 160 : state.metric === "broadband_per_100" ? 55 : 100;
+  yScale = d3.scaleLinear().domain([0, yMax]).range([ih, 0]);
+
+  const popExt = d3.extent(state.data, d => d.population);
+  rScale = d3.scaleSqrt().domain([popExt[0] || 1e6, popExt[1] || 1.5e9]).range([3, 55]);
+
+  colorScale = d3.scaleOrdinal().domain(Object.keys(REGION_COLORS)).range(Object.values(REGION_COLORS));
+
+  // X axis
+  const xAxis = d3.axisBottom(xScale).tickFormat(d => d3.format("$,.0f")(d)).ticks(8);
+  g.append("g").attr("class", "x-axis").attr("transform", `translate(0,${ih})`)
+    .call(xAxis).selectAll("text")
+    .style("font-size", "10px").style("font-family", "'Source Sans 3', sans-serif").style("fill", "#6b7280");
+
+  g.append("text").attr("x", iw / 2).attr("y", ih + 38).attr("text-anchor", "middle")
+    .style("font-size", "11px").style("font-family", "'Source Sans 3', sans-serif").style("fill", "#6b7280")
+    .text(`GDP per capita (PPP, constant 2017 $)${state.logScale ? " — log scale" : ""}`);
+
+  // Y axis
+  g.append("g").attr("class", "y-axis").call(d3.axisLeft(yScale).ticks(8))
+    .selectAll("text").style("font-size", "10px").style("font-family", "'Source Sans 3', sans-serif").style("fill", "#6b7280");
+
+  g.append("text").attr("transform", "rotate(-90)").attr("x", -ih / 2).attr("y", -50).attr("text-anchor", "middle")
+    .style("font-size", "11px").style("font-family", "'Source Sans 3', sans-serif").style("fill", "#6b7280")
+    .text(METRIC_LABELS[state.metric]);
+
+  // Grid lines
+  g.append("g").attr("class", "grid").selectAll("line").data(yScale.ticks(8))
+    .enter().append("line").attr("x1", 0).attr("x2", iw).attr("y1", d => yScale(d)).attr("y2", d => yScale(d))
+    .style("stroke", "#e5e7eb").style("stroke-width", "0.5").style("stroke-dasharray", "3,3");
+}
+
+// --- Draw Bubbles ---
+function drawYear(year, transitionDuration = 0) {
+  const data = state.yearData[year] || [];
+  if (data.length === 0) return;
+
+  const iw = width - margin.left - margin.right;
+  const ih = height - margin.top - margin.bottom;
+
+  const plotData = data
+    .filter(d => d.population > 0 && d.gdp_per_capita_ppp > 0)
+    .map(d => ({
+      ...d,
+      cx: xScale(Math.max(state.logScale ? 300 : 0, d.gdp_per_capita_ppp)),
+      cy: yScale(Math.max(0, d[state.metric] || 0)),
+      r: rScale(d.population),
+      color: colorScale(d.region_group),
+      dimmed: state.highlightRegion && d.region_group !== state.highlightRegion,
+    }))
+    .filter(d => !isNaN(d.cx) && !isNaN(d.cy) && d.r > 0);
+
+  const bubbles = g.selectAll("circle.bubble").data(plotData, d => d.country_id);
+
+  bubbles.exit().transition().duration(transitionDuration).attr("r", 0).style("opacity", 0).remove();
+
+  const enter = bubbles.enter().append("circle").attr("class", "bubble")
+    .attr("cx", d => d.cx).attr("cy", d => d.cy).attr("r", 0)
+    .style("fill", d => d.color).style("fill-opacity", 0)
+    .style("stroke", "#fff").style("stroke-width", 0.5).style("cursor", "pointer");
+
+  const merge = enter.merge(bubbles);
+  const t = merge.transition().duration(transitionDuration).ease(d3.easeLinear);
+
+  if (transitionDuration > 0) {
+    t.attr("cx", d => d.cx).attr("cy", d => d.cy).attr("r", d => d.r)
+     .style("fill-opacity", d => d.dimmed ? 0.15 : 0.75)
+     .style("stroke-opacity", d => d.dimmed ? 0.1 : 0.4);
+  } else {
+    merge.attr("cx", d => d.cx).attr("cy", d => d.cy).attr("r", d => d.r)
+         .style("fill-opacity", d => d.dimmed ? 0.15 : 0.75)
+         .style("stroke-opacity", d => d.dimmed ? 0.1 : 0.4);
+  }
+
+  // Labels
+  const labelData = plotData.filter(d => d.r > 22);
+  const labels = g.selectAll("text.bubble-label").data(labelData, d => d.country_id);
+  labels.exit().remove();
+  labels.enter().append("text").attr("class", "bubble-label")
+    .attr("text-anchor", "middle").attr("dy", "0.35em")
+    .style("font-size", d => Math.max(9, d.r * 0.35) + "px")
+    .style("font-weight", "700").style("font-family", "'Source Sans 3', sans-serif")
+    .style("fill", "#fff").style("pointer-events", "none")
+    .style("text-shadow", "0 1px 2px rgba(0,0,0,0.3)")
+    .merge(labels).transition().duration(transitionDuration).ease(d3.easeLinear)
+    .attr("x", d => d.cx).attr("y", d => d.cy).text(d => d.iso3);
+
+  if (state.trails && transitionDuration > 0) drawTrails(year);
+
+  // Tooltips
+  g.selectAll("circle.bubble")
+    .on("mouseover", function(event, d) {
+      d3.select(this).style("fill-opacity", 1).style("stroke", "#0c1929")
+        .style("stroke-width", 2).style("stroke-opacity", 0.8).attr("r", d.r * 1.15);
+      const tt = d3.select("#tooltip");
+      tt.select(".tt-country").text(d.country_name);
+      tt.select("#tt-gdp").text("$" + d3.format(",.0f")(d.gdp_per_capita_ppp));
+      tt.select("#tt-pop").text(d3.format(",.1f")(d.population / 1e6) + "M");
+      tt.select("#tt-metric").text(d3.format(",.1f")(d[state.metric] || 0));
+      tt.classed("visible", true);
+      const [mx, my] = d3.pointer(event, document.getElementById("chart-container"));
+      const ttW = tt.node().offsetWidth, ttH = tt.node().offsetHeight;
+      let left = mx + 15, top = my - ttH / 2;
+      if (left + ttW > width) left = mx - ttW - 15;
+      if (top < 0) top = 5;
+      if (top + ttH > height) top = height - ttH - 5;
+      tt.style("left", left + "px").style("top", top + "px");
+    })
+    .on("mousemove", function(event) {
+      const tt = d3.select("#tooltip");
+      const [mx, my] = d3.pointer(event, document.getElementById("chart-container"));
+      const ttW = tt.node().offsetWidth, ttH = tt.node().offsetHeight;
+      let left = mx + 15, top = my - ttH / 2;
+      if (left + ttW > width) left = mx - ttW - 15;
+      if (top < 0) top = 5;
+      if (top + ttH > height) top = height - ttH - 5;
+      tt.style("left", left + "px").style("top", top + "px");
+    })
+    .on("mouseout", function() {
+      d3.select(this).style("fill-opacity", d => d.dimmed ? 0.15 : 0.75)
+        .style("stroke", "#fff").style("stroke-width", 0.5)
+        .style("stroke-opacity", d => d.dimmed ? 0.1 : 0.4).attr("r", d => d.r);
+      d3.select("#tooltip").classed("visible", false);
+    });
+}
+
+// --- Trails ---
+function drawTrails(currentYear) {
+  const trailYears = 15, startYear = Math.max(1960, currentYear - trailYears);
+  const trailLines = [];
+  state.countries.forEach(c => {
+    const points = [];
+    for (let y = startYear; y <= currentYear; y++) {
+      const yd = state.yearData[y]; if (!yd) continue;
+      const cd = yd.find(d => d.country_id === c.id);
+      if (cd && cd.population > 0 && cd.gdp_per_capita_ppp > 0) {
+        points.push({ x: xScale(Math.max(state.logScale ? 300 : 0, cd.gdp_per_capita_ppp)), y: yScale(Math.max(0, cd[state.metric] || 0)), year: y });
+      }
+    }
+    if (points.length >= 2) trailLines.push({ id: c.id, points, color: colorScale(c.region_group) });
+  });
+  g.selectAll("polyline.trail").remove();
+  const tg = g.append("g").attr("class", "trails");
+  trailLines.forEach(l => {
+    tg.append("polyline").attr("class", "trail")
+      .attr("points", l.points.map(p => `${p.x},${p.y}`).join(" "))
+      .style("fill", "none").style("stroke", l.color).style("stroke-width", 1)
+      .style("stroke-opacity", 0.25).style("pointer-events", "none");
+    const first = l.points[0];
+    tg.append("circle").attr("cx", first.x).attr("cy", first.y).attr("r", 2)
+      .style("fill", l.color).style("fill-opacity", 0.5).style("pointer-events", "none");
+  });
+}
+
+// --- KPI Updates ---
+function updateKPIs(year) {
+  const s = state.summary.find(x => x.year === year);
+  if (!s) return;
+  document.getElementById("kpi-internet").textContent = s.weighted_internet_pct ? s.weighted_internet_pct.toFixed(1) + "%" : "—";
+  document.getElementById("kpi-mobile").textContent = s.weighted_mobile_per_100 ? s.weighted_mobile_per_100.toFixed(1) : "—";
+  document.getElementById("kpi-broadband").textContent = s.weighted_broadband_per_100 ? s.weighted_broadband_per_100.toFixed(1) : "—";
+  document.getElementById("kpi-countries").textContent = s.countries_with_internet ? s.countries_with_internet + " / 100" : "—";
+  const ps = state.summary.find(x => x.year === year - 1);
+  if (ps && s.weighted_internet_pct) {
+    const d = s.weighted_internet_pct - (ps.weighted_internet_pct || 0);
+    document.getElementById("kpi-internet-change").textContent = d >= 0 ? `↑ ${d.toFixed(1)}pp` : `↓ ${Math.abs(d).toFixed(1)}pp`;
+  }
+}
+
+function updateYearUI(year) {
+  document.getElementById("year-display").textContent = year;
+  document.getElementById("year-slider").value = year;
+  updateKPIs(year);
+}
+
+// --- Controls ---
+function setYear(year) {
+  year = +year;
+  if (year !== state.year) { state.year = year; updateYearUI(year); drawYear(year, 100); }
+}
+
+function stepYear(delta) { setYear(Math.max(1960, Math.min(2023, state.year + delta))); }
+
+function selectMetric(metric, btn) {
+  state.metric = metric;
+  document.querySelectorAll(".metric-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  initChart(); drawYear(state.year, 0); updateYearUI(state.year);
+}
+
+function togglePlay() {
+  state.playing = !state.playing;
+  const btn = document.getElementById("btn-play");
+  btn.textContent = state.playing ? "⏸ Pause" : "▶ Play";
+  btn.classList.toggle("active-ctrl", state.playing);
+  if (state.playing) animateLoop();
+  else if (state.timer) { clearTimeout(state.timer); state.timer = null; }
+}
+
+function animateLoop() {
+  if (!state.playing) return;
+  const ny = state.year + 1;
+  if (ny > 2023) {
+    state.year = 1960; updateYearUI(1960); drawYear(1960, 200);
+    state.timer = setTimeout(animateLoop, 800);
+  } else {
+    state.year = ny; updateYearUI(ny); drawYear(ny, state.speed * 0.6);
+    state.timer = setTimeout(animateLoop, state.speed);
+  }
+}
+
+function setSpeed(s) { state.speed = +s; if (state.playing) { clearTimeout(state.timer); state.timer = setTimeout(animateLoop, state.speed); } }
+
+function toggleScale() {
+  state.logScale = !state.logScale;
+  const btn = document.getElementById("btn-log");
+  btn.textContent = state.logScale ? "Log Scale" : "Linear";
+  btn.classList.toggle("active-ctrl", state.logScale);
+  initChart(); drawYear(state.year, 0);
+}
+
+function toggleTrails() {
+  state.trails = !state.trails;
+  const btn = document.getElementById("btn-trails");
+  btn.textContent = "Trails: " + (state.trails ? "On" : "Off");
+  btn.classList.toggle("active-ctrl", state.trails);
+  if (!state.trails) g.selectAll("polyline.trail, .trails").remove();
+  drawYear(state.year, 100);
+}
+
+function drawLegend() {
+  document.getElementById("region-legend").innerHTML = Object.entries(REGION_LABELS)
+    .map(([k, v]) => `<span class="legend-item${state.highlightRegion === k ? ' active-leg' : ''}" onclick="highlightRegion('${k}')">
+      <span class="legend-dot" style="background:${REGION_COLORS[k]};"></span>${v}</span>`).join("");
+}
+
+function cycleHighlight() {
+  const regions = Object.keys(REGION_LABELS);
+  const i = state.highlightRegion ? regions.indexOf(state.highlightRegion) : -1;
+  state.highlightRegion = i >= regions.length - 1 ? null : regions[i + 1];
+  document.getElementById("btn-highlight").textContent = state.highlightRegion ? REGION_LABELS[state.highlightRegion] : "All Regions";
+  document.getElementById("btn-highlight").classList.toggle("active-ctrl", !!state.highlightRegion);
+  drawLegend(); drawYear(state.year, 100);
+}
+
+function highlightRegion(r) {
+  state.highlightRegion = state.highlightRegion === r ? null : r;
+  document.getElementById("btn-highlight").textContent = state.highlightRegion ? REGION_LABELS[state.highlightRegion] : "All Regions";
+  document.getElementById("btn-highlight").classList.toggle("active-ctrl", !!state.highlightRegion);
+  drawLegend(); drawYear(state.year, 100);
+}
+
+function handleResize() {
+  const bb = document.getElementById("chart-container").getBoundingClientRect();
+  width = bb.width; height = Math.max(500, Math.min(680, width * 0.58));
+  initChart(); drawYear(state.year, 0);
+}
+
+// --- Init ---
+async function init() {
+  await loadData();
+  initChart();
+  drawLegend();
+  setYear(1990);
+
+  // Wire metric buttons
+  document.querySelectorAll(".metric-btn").forEach(btn => {
+    btn.addEventListener("click", function() { selectMetric(this.dataset.m, this); });
+  });
+
+  document.getElementById("btn-play").addEventListener("click", togglePlay);
+  document.getElementById("btn-log").addEventListener("click", toggleScale);
+  document.getElementById("btn-trails").addEventListener("click", toggleTrails);
+  document.getElementById("btn-highlight").addEventListener("click", cycleHighlight);
+  document.getElementById("speed-select").addEventListener("change", function() { setSpeed(this.value); });
+  document.getElementById("btn-log").classList.add("active-ctrl");
+
+  window.addEventListener("resize", () => setTimeout(handleResize, 200));
+}
+
+// Expose for inline onclick handlers
+window.setYear = setYear;
+window.stepYear = stepYear;
+window.highlightRegion = highlightRegion;
+
+init();
+</script>
+
 </body>
 </html>

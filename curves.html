@@ -12,6 +12,41 @@
 <link rel="stylesheet" href="hheuristics-tokens.css">
 <link rel="stylesheet" href="hheuristics-components.css">
 <link rel="stylesheet" href="site.css">
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<style>
+  .curves-toolbar {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+    padding: 0.75rem 1rem; background: #fff; border: 1px solid var(--border-subtle);
+    margin-bottom: 0.75rem;
+  }
+  .curves-toolbar select {
+    font-size: 0.78rem; padding: 0.3rem 0.5rem;
+    border: 1px solid var(--border-default); border-radius: 5px;
+    font-family: var(--font-body);
+  }
+  .country-tag {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.3rem 0.6rem; border-radius: 5px;
+    font-size: 0.72rem; font-weight: 600; font-family: var(--font-body);
+    background: var(--color-brand); color: #fff; cursor: default;
+  }
+  .country-tag .remove-tag {
+    cursor: pointer; font-weight: 700; margin-left: 2px;
+  }
+  .country-tag .remove-tag:hover { color: var(--color-accent); }
+  .curve-add-btn {
+    padding: 0.3rem 0.6rem; font-size: 0.72rem; font-weight: 600;
+    border: 1px dashed var(--border-default); border-radius: 5px;
+    background: none; color: var(--text-muted); cursor: pointer;
+    font-family: var(--font-body); transition: all 0.15s;
+  }
+  .curve-add-btn:hover { border-color: var(--color-brand); color: var(--color-brand); }
+  .curves-card {
+    background: #fff; border: 1px solid var(--border-subtle); padding: 0.75rem;
+  }
+  .curves-card svg { display: block; }
+  .curves-card text { font-family: 'Source Sans 3', sans-serif; }
+</style>
 </head>
 <body>
 
@@ -22,11 +57,8 @@
       <div>H Heuristics<span class="masthead__brand-sub">Global Diffusion Observatory</span></div>
     </a>
     <nav class="masthead__nav">
-      <a href="index.html">Home</a>
-      <a href="theory.html">Theory</a>
-      <a href="observatory.html">Observatory</a>
-      <a href="curves.html" class="active">Curves</a>
-      <a href="about.html">About</a>
+      <a href="index.html">Home</a><a href="theory.html">Theory</a><a href="observatory.html">Observatory</a>
+      <a href="curves.html" class="active">Curves</a><a href="about.html">About</a>
     </nav>
   </header>
 </div>
@@ -42,34 +74,36 @@
 <div class="hairline hairline--gold"></div>
 
 <div class="page page--wide">
-  <div class="viz-wrapper" style="background: #f8f9fb; padding: var(--space-4);">
-    <iframe src="viz/diffusion-curves.html" class="viz-embed" title="Diffusion S-Curves — Global Diffusion Observatory" sandbox="allow-scripts allow-same-origin" loading="lazy"></iframe>
+  <div class="curves-toolbar">
+    <span style="font-size:0.72rem;font-weight:600;color:var(--text-muted);">METRIC:</span>
+    <select id="curve-metric" onchange="updateCurves()">
+      <option value="internet_pct">Internet Users (%)</option>
+      <option value="mobile_per_100">Mobile Subscriptions (per 100)</option>
+      <option value="broadband_per_100">Broadband Subscriptions (per 100)</option>
+    </select>
+    <span style="font-size:0.72rem;font-weight:600;color:var(--text-muted);margin-left:0.3rem;">COUNTRIES:</span>
+    <div id="country-tags" style="display:flex;flex-wrap:wrap;gap:0.3rem;align-items:center;"></div>
+    <button class="curve-add-btn" onclick="addCountry()">+ Add Country</button>
   </div>
 
-  <div class="callout" style="margin-top: var(--space-8);">
+  <div class="curves-card">
+    <div id="curve-chart-container" style="width:100%;">
+      <svg id="curve-chart"></svg>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: var(--space-6);">
     <p class="callout__heading">How to Read S-Curves</p>
     <p class="callout__text">
-      Each line traces a country's adoption of a technology from 1960 to 2023. The <strong>dashed grey curve</strong> is the theoretical Rogers S-curve for reference. Steeper curves mean faster adoption. Countries that start later but rise quickly demonstrate <strong>leapfrogging</strong>. The horizontal position of a curve shows <strong>when</strong> adoption began; the final height shows the ultimate <strong>ceiling</strong>. Use the dropdown to switch between Internet, Mobile, and Broadband metrics, and click <strong>+ Add Country</strong> to compare additional nations.
+      Each colored line traces a country's adoption from 1960–2023. The <strong>dashed grey curve</strong> is the theoretical Rogers S-curve. <strong>Steeper curves</strong> = faster adoption. Countries starting later but rising quickly show <strong>leapfrogging</strong>. Use the dropdown to switch metrics and <strong>+ Add Country</strong> to compare nations (enter ISO codes like USA, CHN, IND, NGA, BRA, DEU, KEN, KOR, GBR, etc.).
     </p>
   </div>
 
   <div class="info-grid" style="margin-top: var(--space-8);">
-    <div class="info-grid__item">
-      <h4>🇺🇸 United States</h4>
-      <p>Early internet adopter (1989). Near-universal internet by 2015. Mobile adoption reached 145 subscriptions per 100 people — exceeding 100% due to multiple devices and IoT.</p>
-    </div>
-    <div class="info-grid__item">
-      <h4>🇨🇳 China</h4>
-      <p>Started internet adoption later (1995) but achieved one of the steepest S-curves in history. Over 1 billion internet users today. Mobile adoption surged after 2005 with the smartphone revolution.</p>
-    </div>
-    <div class="info-grid__item">
-      <h4>🇮🇳 India</h4>
-      <p>Internet adoption took off after 2010, driven by affordable smartphones and Reliance Jio's disruptive pricing. Mobile subscriptions exploded from 2005 onward — a classic leapfrog story.</p>
-    </div>
-    <div class="info-grid__item">
-      <h4>🇳🇬 Nigeria</h4>
-      <p>Africa's largest economy. Mobile phones went from near-zero in 2000 to over 100 per 100 people by 2023 — a textbook case of leapfrogging past fixed-line infrastructure.</p>
-    </div>
+    <div class="info-grid__item"><h4>🇺🇸 United States</h4><p>Early internet adopter (1989). Near-universal internet by 2015. Mobile reached 145/100 — exceeding 100% via multiple devices and IoT.</p></div>
+    <div class="info-grid__item"><h4>🇨🇳 China</h4><p>Started later (1995) but achieved one of the steepest S-curves in history. Over 1 billion internet users. Mobile surged after 2005.</p></div>
+    <div class="info-grid__item"><h4>🇮🇳 India</h4><p>Internet took off after 2010, driven by affordable smartphones and Jio's disruptive pricing. Classic mobile leapfrog story.</p></div>
+    <div class="info-grid__item"><h4>🇳🇬 Nigeria</h4><p>Mobile went from near-zero in 2000 to 100+/100 by 2023 — leapfrogging fixed-line infrastructure entirely.</p></div>
   </div>
 </div>
 
@@ -82,13 +116,122 @@
     <div class="footer-brand__logo">H</div>
     <p class="footer-brand__tagline">Market Research &amp; Economic Development Consulting</p>
     <div style="display:flex; gap:var(--space-8); flex-wrap:wrap; margin: var(--space-6) 0;">
-      <div>
-        <p class="footer-brand__heading">Observatory</p>
+      <div><p class="footer-brand__heading">Observatory</p>
         <a href="index.html">Home</a><a href="theory.html">Theory</a><a href="observatory.html">Observatory</a><a href="curves.html">Curves</a><a href="about.html">About</a>
       </div>
     </div>
     <div class="footer-brand__bottom">&copy; 2026 H Heuristics.</div>
   </div>
 </footer>
+
+<script>
+// ============================================================
+// DIFFUSION S-CURVES — Inline D3.js
+// ============================================================
+const curveColors = d3.schemeCategory10;
+let curveData = [];
+let selectedCountries = ["USA", "CHN", "IND", "NGA", "BRA", "DEU"];
+let curveMetric = "internet_pct";
+
+async function loadCurveData() {
+  curveData = await fetch("viz/_file/diffusion_data.71af4842.json").then(r => r.json());
+}
+
+function drawCountryTags() {
+  document.getElementById("country-tags").innerHTML = selectedCountries.map(cid => {
+    const c = curveData.find(d => d.country_id === cid);
+    const name = c ? c.country_name : cid;
+    return `<span class="country-tag">${name}<span class="remove-tag" onclick="removeCountry('${cid}')">×</span></span>`;
+  }).join("");
+}
+
+function removeCountry(cid) {
+  selectedCountries = selectedCountries.filter(c => c !== cid);
+  updateCurves();
+}
+
+function addCountry() {
+  const cid = prompt("Enter country code (e.g., USA, CHN, IND, NGA, BRA, DEU):");
+  if (cid && !selectedCountries.includes(cid.toUpperCase())) {
+    selectedCountries.push(cid.toUpperCase());
+    updateCurves();
+  }
+}
+
+function drawCurves() {
+  const container = document.getElementById("curve-chart-container");
+  const bb = container.getBoundingClientRect();
+  const width = Math.max(600, bb.width);
+  const height = 500;
+  const margin = { top: 20, right: 160, bottom: 40, left: 55 };
+  const iw = width - margin.left - margin.right;
+  const ih = height - margin.top - margin.bottom;
+
+  const svg = d3.select("#curve-chart").attr("width", width).attr("height", height);
+  svg.selectAll("*").remove();
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const xScale = d3.scaleLinear().domain([1960, 2023]).range([0, iw]);
+  const yExt = curveMetric === "mobile_per_100" ? [0, 160] : curveMetric === "broadband_per_100" ? [0, 55] : [0, 100];
+  const yScale = d3.scaleLinear().domain(yExt).range([ih, 0]);
+
+  // Axes
+  g.append("g").attr("transform", `translate(0,${ih})`)
+    .call(d3.axisBottom(xScale).tickFormat(d3.format("d")).ticks(12))
+    .selectAll("text").style("font-size", "10px").style("fill", "#6b7280");
+  g.append("g").call(d3.axisLeft(yScale).ticks(8))
+    .selectAll("text").style("font-size", "10px").style("fill", "#6b7280");
+
+  // Reference logistic S-curve
+  const refLine = d3.line().x(d => xScale(d.year)).y(d => yScale(d.value));
+  const refPoints = [];
+  for (let t = -5; t <= 5; t += 0.1) {
+    const year = 1995 + t * 3;
+    if (year >= 1960 && year <= 2023) refPoints.push({ year, value: 100 / (1 + Math.exp(-t)) });
+  }
+  g.append("path").datum(refPoints).attr("d", refLine)
+    .style("fill", "none").style("stroke", "#ccc").style("stroke-width", 1.5)
+    .style("stroke-dasharray", "6,4").style("opacity", 0.5);
+
+  // Country lines
+  const line = d3.line().x(d => xScale(d.year)).y(d => yScale(Math.max(0, d[curveMetric] || 0)));
+  selectedCountries.forEach((cid, i) => {
+    const cd = curveData.filter(d => d.country_id === cid).sort((a, b) => a.year - b.year);
+    if (cd.length === 0) return;
+    const color = curveColors[i % 10];
+    g.append("path").datum(cd).attr("d", line)
+      .style("fill", "none").style("stroke", color).style("stroke-width", 2.5).style("stroke-linejoin", "round");
+    const last = cd[cd.length - 1];
+    g.append("text").attr("x", xScale(last.year) + 5).attr("y", yScale(Math.max(0, last[curveMetric] || 0)))
+      .attr("dy", "0.35em").style("font-size", "11px").style("font-weight", "600")
+      .style("fill", color).text(last.country_name);
+  });
+
+  // Axis labels
+  g.append("text").attr("x", iw / 2).attr("y", ih + 32).attr("text-anchor", "middle")
+    .style("font-size", "11px").style("fill", "#6b7280").text("Year");
+  g.append("text").attr("transform", "rotate(-90)").attr("x", -ih / 2).attr("y", -45).attr("text-anchor", "middle")
+    .style("font-size", "11px").style("fill", "#6b7280")
+    .text(curveMetric === "internet_pct" ? "Internet Users (%)" : curveMetric === "mobile_per_100" ? "Mobile /100" : "Broadband /100");
+}
+
+async function updateCurves() {
+  if (curveData.length === 0) await loadCurveData();
+  curveMetric = document.getElementById("curve-metric")?.value || "internet_pct";
+  drawCountryTags();
+  drawCurves();
+}
+
+// Init
+(async () => {
+  await loadCurveData();
+  drawCountryTags();
+  drawCurves();
+  window.removeCountry = removeCountry;
+  window.addCountry = addCountry;
+  window.updateCurves = updateCurves;
+})();
+</script>
+
 </body>
 </html>
