@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="generator" content="Observable Framework v1.13.4">
+<title>Global Diffusion Observatory | Global Diffusion Observatory — H Heuristics</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight,alt,wide,wide.9b64840a.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight,alt,wide,wide.9b64840a.css">
+<link rel="modulepreload" href="./_observablehq/client.9519fa98.js">
+<link rel="modulepreload" href="./_observablehq/runtime.607a8173.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.23790ac1.js">
+<link rel="modulepreload" href="./_npm/d3@7.9.0/080cf928.js">
+<link rel="modulepreload" href="./_npm/d3-array@3.2.4/b8e751b6.js">
+<link rel="modulepreload" href="./_npm/d3-axis@3.0.0/c662ea05.js">
+<link rel="modulepreload" href="./_npm/d3-brush@3.0.0/d162d8c6.js">
+<link rel="modulepreload" href="./_npm/d3-chord@3.0.1/5cedd0be.js">
+<link rel="modulepreload" href="./_npm/d3-color@3.1.0/65d51007.js">
+<link rel="modulepreload" href="./_npm/d3-contour@4.0.2/c576a91a.js">
+<link rel="modulepreload" href="./_npm/d3-delaunay@6.0.4/8b43826d.js">
+<link rel="modulepreload" href="./_npm/d3-dispatch@3.0.1/3fb06f14.js">
+<link rel="modulepreload" href="./_npm/d3-drag@3.0.0/20b76948.js">
+<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/097745a2.js">
+<link rel="modulepreload" href="./_npm/d3-ease@3.0.1/8683b012.js">
+<link rel="modulepreload" href="./_npm/d3-fetch@3.0.1/5c319046.js">
+<link rel="modulepreload" href="./_npm/d3-force@3.0.0/33924f3e.js">
+<link rel="modulepreload" href="./_npm/d3-format@3.1.2/8d67a1ae.js">
+<link rel="modulepreload" href="./_npm/d3-geo@3.1.1/8037bd0b.js">
+<link rel="modulepreload" href="./_npm/d3-hierarchy@3.1.2/a9ba0229.js">
+<link rel="modulepreload" href="./_npm/d3-interpolate@3.0.1/e0a47f97.js">
+<link rel="modulepreload" href="./_npm/d3-path@3.1.0/f9e9e0ab.js">
+<link rel="modulepreload" href="./_npm/d3-polygon@3.0.1/2da8eb3b.js">
+<link rel="modulepreload" href="./_npm/d3-quadtree@3.0.1/09002e01.js">
+<link rel="modulepreload" href="./_npm/d3-random@3.0.1/5108797c.js">
+<link rel="modulepreload" href="./_npm/d3-scale@4.0.2/c9f2571b.js">
+<link rel="modulepreload" href="./_npm/d3-scale-chromatic@3.1.0/f3c78e0d.js">
+<link rel="modulepreload" href="./_npm/d3-selection@3.0.0/28717d05.js">
+<link rel="modulepreload" href="./_npm/d3-shape@3.2.0/7c6e2a50.js">
+<link rel="modulepreload" href="./_npm/d3-time@3.1.0/3d1d57c6.js">
+<link rel="modulepreload" href="./_npm/d3-time-format@4.1.0/643581a8.js">
+<link rel="modulepreload" href="./_npm/d3-timer@3.0.1/e99232db.js">
+<link rel="modulepreload" href="./_npm/d3-transition@3.0.1/bd07fd9a.js">
+<link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/d09f7cc9.js">
+<link rel="modulepreload" href="./_npm/internmap@2.0.3/af036d7e.js">
+<link rel="modulepreload" href="./_npm/delaunator@5.1.0/7b06abe7.js">
+<link rel="modulepreload" href="./_npm/robust-predicates@3.0.3/b42f30a7.js">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --accent: #4269d0;
+    --accent-light: #e8edf8;
+    --accent2: #2e5bb8;
+    --warn: #dc3545;
+    --gold: #e6a817;
+    --green: #22c55e;
+    --border: #e5e7eb;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-serif: 'Source Serif 4', serif;
+  }
+
+  /* Region colors for Gapminder chart */
+  --region-africa: #FF6B35;
+  --region-asia: #004E89;
+  --region-europe: #1A936F;
+  --region-north-america: #9B5DE5;
+  --region-south-america: #F9C74F;
+  --region-oceania: #F15BB5;
+  --region-middle-east: #00B4D8;
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* --- Card --- */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.25rem 1.5rem;
+  }
+
+  /* --- Typography --- */
+  h1, h2, h3 { color: var(--text); font-weight: 700; }
+  h1 { font-size: 1.75rem; letter-spacing: -0.03em; }
+  h2 { font-size: 1.3rem; letter-spacing: -0.02em; }
+  h3 { font-size: 0.85rem; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+
+  /* --- Metrics --- */
+  .metric-value { font-size: 1.75rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .metric-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 0.2rem; }
+  .metric-change { font-size: 0.75rem; font-weight: 600; margin-top: 0.15rem; }
+  .metric-change.up { color: var(--green); }
+  .metric-change.neutral { color: var(--muted); }
+
+  /* --- Utility --- */
+  .muted { color: var(--muted); font-size: 0.82rem; }
+  .accent { color: var(--accent); }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .flex { display: flex; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .gap-sm { gap: 0.5rem; }
+  .gap-md { gap: 1rem; }
+
+  /* --- Buttons --- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.45rem 1rem; border-radius: var(--radius-sm);
+    font-size: 0.8rem; font-weight: 600; font-family: var(--font-sans);
+    border: 1px solid var(--border); background: #fff; color: var(--text);
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.active:hover { background: var(--accent2); }
+  .btn-sm { padding: 0.3rem 0.65rem; font-size: 0.72rem; }
+
+  /* --- Navigation --- */
+  nav { display: flex; gap: 0.15rem; flex-wrap: wrap; }
+  nav a {
+    color: var(--muted); font-size: 0.82rem; font-weight: 500;
+    padding: 0.4rem 0.85rem; border-radius: var(--radius-sm);
+    text-decoration: none; transition: all 0.15s;
+  }
+  nav a:hover { color: var(--accent); background: var(--accent-light); }
+  nav a[aria-current] { color: var(--accent); font-weight: 700; background: var(--accent-light); }
+
+  /* --- Page header --- */
+  .page-hero { text-align: center; padding: 1.5rem 0 0.5rem; }
+  .page-hero h1 { font-family: var(--font-serif); font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+  .page-hero p { color: var(--muted); max-width: 650px; margin: 0.4rem auto 0; font-size: 0.95rem; line-height: 1.55; }
+
+  /* --- Chart container --- */
+  .chart-container { position: relative; width: 100%; }
+  .chart-container svg { display: block; width: 100%; height: auto; }
+
+  /* --- Tooltip --- */
+  .tooltip {
+    position: absolute; pointer-events: none;
+    background: rgba(26, 26, 46, 0.94); color: #fff;
+    padding: 0.6rem 0.85rem; border-radius: 8px;
+    font-size: 0.78rem; line-height: 1.5; font-family: var(--font-sans);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index: 100;
+    max-width: 260px; opacity: 0; transition: opacity 0.15s;
+  }
+  .tooltip.visible { opacity: 1; }
+  .tooltip .country { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .tooltip .stat { display: flex; justify-content: space-between; gap: 1rem; }
+  .tooltip .stat-label { color: #a0a0b8; }
+  .tooltip .stat-val { font-weight: 600; }
+
+  /* --- Slider --- */
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; background: var(--border);
+    border-radius: 3px; outline: none; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2); cursor: pointer;
+  }
+
+  /* --- Legend --- */
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    display: inline-block; flex-shrink: 0;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    h1 { font-size: 1.3rem; }
+    .page-hero h1 { font-size: 1.5rem; }
+    .metric-value { font-size: 1.4rem; }
+    nav { gap: 0; }
+    nav a { font-size: 0.72rem; padding: 0.3rem 0.5rem; }
+  }
+</style>
+<script type="module">
+
+import {define} from "./_observablehq/client.9519fa98.js";
+import {registerFile} from "./_observablehq/stdlib.23790ac1.js";
+
+registerFile("./country_meta.json", {"name":"./country_meta.json","mimeType":"application/json","path":"./_file/country_meta.2fc3c113.json","lastModified":1784021896914,"size":14315});
+registerFile("./diffusion_data.json", {"name":"./diffusion_data.json","mimeType":"application/json","path":"./_file/diffusion_data.71af4842.json","lastModified":1784021896905,"size":1793298});
+
+define({id: "a358ff19", inputs: ["FileAttachment","d3"], outputs: ["REGION_COLORS","REGION_LABELS","METRIC_LABELS","state","svg","g","xScale","yScale","rScale","colorScale","margin","width","height","loadData","initChart","drawYear","drawTrails","updateYearUI","updateKPIs","drawLegend","setYear","stepYear","selectMetric","togglePlay","animateLoop","setSpeed","toggleScale","toggleTrails","cycleHighlight","highlightRegion","handleResize","init"], body: (FileAttachment,d3) => {
+// ============================================================
+// GLOBAL DIFFUSION OBSERVATORY — Gapminder Bubble Chart
+// H Heuristics × Observable Pro — D3.js v7
+// ============================================================
+
+// --- Constants ---
+const REGION_COLORS = {
+  africa: "#FF6B35",
+  asia: "#004E89",
+  east_asia_pacific: "#1A936F",
+  europe: "#4269D0",
+  north_america: "#9B5DE5",
+  latin_america: "#F9C74F",
+  middle_east: "#00B4D8",
+  other: "#8B949E"
+};
+
+const REGION_LABELS = {
+  africa: "Sub-Saharan Africa",
+  asia: "South Asia",
+  east_asia_pacific: "East Asia & Pacific",
+  europe: "Europe & Central Asia",
+  north_america: "North America",
+  latin_america: "Latin America & Caribbean",
+  middle_east: "Middle East & North Africa",
+  other: "Other"
+};
+
+const METRIC_LABELS = {
+  internet_pct: "Internet Users (% of population)",
+  mobile_per_100: "Mobile Cellular Subscriptions (per 100)",
+  broadband_per_100: "Fixed Broadband Subscriptions (per 100)"
+};
+
+// --- State ---
+let state = {
+  year: 1990,
+  metric: "internet_pct",
+  playing: false,
+  speed: 800,
+  logScale: true,
+  trails: false,
+  highlightRegion: null,  // null = all, or region key
+  data: [],           // full dataset
+  yearData: {},       // year -> array of country data
+  countries: [],      // country metadata
+  summary: [],        // yearly summaries
+  timer: null,
+};
+
+// --- D3 scales and SVG ---
+let svg, g, xScale, yScale, rScale, colorScale;
+let margin = { top: 10, right: 40, bottom: 50, left: 60 };
+let width, height;
+
+// --- Load Data ---
+async function loadData() {
+  const [dataRaw, metaRaw] = await Promise.all([
+    FileAttachment("./diffusion_data.json").json(),
+    FileAttachment("./country_meta.json").json()
+  ]);
+
+  state.data = dataRaw;
+  state.countries = metaRaw;
+
+  // Index by year
+  state.yearData = {};
+  dataRaw.forEach(d => {
+    if (!state.yearData[d.year]) state.yearData[d.year] = [];
+    state.yearData[d.year].push(d);
+  });
+
+  // Compute yearly summary on-the-fly
+  const yearlyMap = {};
+  dataRaw.forEach(d => {
+    const y = d.year;
+    if (!yearlyMap[y]) yearlyMap[y] = { year: y, tp: 0, wi: 0, wm: 0, wb: 0, ci: 0, cm: 0, cb: 0 };
+    yearlyMap[y].tp += d.population || 0;
+    if (d.internet_pct > 0) { yearlyMap[y].ci++; yearlyMap[y].wi += d.internet_pct * (d.population || 0); }
+    if (d.mobile_per_100 > 0) { yearlyMap[y].cm++; yearlyMap[y].wm += d.mobile_per_100 * (d.population || 0); }
+    if (d.broadband_per_100 > 0) { yearlyMap[y].cb++; yearlyMap[y].wb += d.broadband_per_100 * (d.population || 0); }
+  });
+  state.summary = Object.values(yearlyMap).map(y => ({
+    year: y.year,
+    weighted_internet_pct: y.tp > 0 ? +(y.wi / y.tp).toFixed(2) : 0,
+    weighted_mobile_per_100: y.tp > 0 ? +(y.wm / y.tp).toFixed(2) : 0,
+    weighted_broadband_per_100: y.tp > 0 ? +(y.wb / y.tp).toFixed(2) : 0,
+    countries_with_internet: y.ci, countries_with_mobile: y.cm, countries_with_broadband: y.cb,
+  })).sort((a, b) => a.year - b.year);
+
+  console.log(`Loaded ${dataRaw.length} rows, ${metaRaw.length} countries`);
+}
+
+// --- Initialize Chart ---
+function initChart() {
+  const container = document.getElementById("chart-container");
+  const bb = container.getBoundingClientRect();
+  width = bb.width;
+  height = Math.max(500, Math.min(650, width * 0.55));
+
+  svg = d3.select("#bubble-chart")
+    .attr("width", width)
+    .attr("height", height)
+    .style("display", "block");
+
+  // Clear any existing content
+  svg.selectAll("*").remove();
+
+  // Main group with margins
+  g = svg.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  // X scale (GDP per capita)
+  if (state.logScale) {
+    xScale = d3.scaleLog()
+      .domain([300, 150000])
+      .range([0, innerW]);
+  } else {
+    xScale = d3.scaleLinear()
+      .domain([0, 120000])
+      .range([0, innerW]);
+  }
+
+  // Y scale
+  const yMax = state.metric === "mobile_per_100" ? 160 : 
+               state.metric === "broadband_per_100" ? 55 : 100;
+  yScale = d3.scaleLinear()
+    .domain([0, yMax])
+    .range([innerH, 0]);
+
+  // Radius scale (population, sqrt for area)
+  const popExtent = d3.extent(state.data, d => d.population);
+  rScale = d3.scaleSqrt()
+    .domain([popExtent[0] || 1e6, popExtent[1] || 1.5e9])
+    .range([3, 55]);
+
+  // Color scale
+  colorScale = d3.scaleOrdinal()
+    .domain(Object.keys(REGION_COLORS))
+    .range(Object.values(REGION_COLORS));
+
+  // --- Draw axes ---
+  // X axis
+  const xAxis = d3.axisBottom(xScale)
+    .tickFormat(d => state.logScale ? d3.format("$,.0f")(d) : d3.format("$,.0f")(d))
+    .ticks(8);
+
+  g.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${innerH})`)
+    .call(xAxis)
+    .selectAll("text")
+    .style("font-size", "10px")
+    .style("font-family", "var(--font-sans)")
+    .style("fill", "var(--muted)");
+
+  // X axis label
+  g.append("text")
+    .attr("x", innerW / 2)
+    .attr("y", innerH + 38)
+    .attr("text-anchor", "middle")
+    .style("font-size", "11px")
+    .style("font-family", "var(--font-sans)")
+    .style("fill", "var(--muted)")
+    .text(`GDP per capita (PPP, constant 2017 $)${state.logScale ? " — log scale" : ""}`);
+
+  // Y axis
+  const yAxis = d3.axisLeft(yScale).ticks(8);
+  g.append("g")
+    .attr("class", "y-axis")
+    .call(yAxis)
+    .selectAll("text")
+    .style("font-size", "10px")
+    .style("font-family", "var(--font-sans)")
+    .style("fill", "var(--muted)");
+
+  // Y axis label
+  g.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -innerH / 2)
+    .attr("y", -50)
+    .attr("text-anchor", "middle")
+    .style("font-size", "11px")
+    .style("font-family", "var(--font-sans)")
+    .style("fill", "var(--muted)")
+    .text(METRIC_LABELS[state.metric]);
+
+  // Grid lines
+  g.append("g")
+    .attr("class", "grid")
+    .selectAll("line")
+    .data(yScale.ticks(8))
+    .enter().append("line")
+    .attr("x1", 0)
+    .attr("x2", innerW)
+    .attr("y1", d => yScale(d))
+    .attr("y2", d => yScale(d))
+    .style("stroke", "var(--border)")
+    .style("stroke-width", "0.5")
+    .style("stroke-dasharray", "3,3");
+}
+
+// --- Draw bubbles for current year ---
+function drawYear(year, transitionDuration = 0) {
+  const data = state.yearData[year] || [];
+  if (data.length === 0) return;
+
+  // Pre-compute positions
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  // Filter and map data
+  const plotData = data
+    .filter(d => d.population > 0 && d.gdp_per_capita_ppp > 0)
+    .map(d => ({
+      ...d,
+      cx: xScale(Math.max(state.logScale ? 300 : 0, d.gdp_per_capita_ppp)),
+      cy: yScale(Math.max(0, d[state.metric] || 0)),
+      r: rScale(d.population),
+      color: colorScale(d.region_group),
+      dimmed: state.highlightRegion && d.region_group !== state.highlightRegion,
+    }))
+    .filter(d => !isNaN(d.cx) && !isNaN(d.cy) && d.r > 0);
+
+  // JOIN
+  const bubbles = g.selectAll("circle.bubble")
+    .data(plotData, d => d.country_id);
+
+  // EXIT
+  bubbles.exit()
+    .transition().duration(transitionDuration)
+    .attr("r", 0)
+    .style("opacity", 0)
+    .remove();
+
+  // ENTER
+  const enter = bubbles.enter()
+    .append("circle")
+    .attr("class", "bubble")
+    .attr("cx", d => d.cx)
+    .attr("cy", d => d.cy)
+    .attr("r", 0)
+    .style("fill", d => d.color)
+    .style("fill-opacity", 0)
+    .style("stroke", "#fff")
+    .style("stroke-width", 0.5)
+    .style("cursor", "pointer");
+
+  // UPDATE + ENTER transition
+  const merge = enter.merge(bubbles);
+
+  if (transitionDuration > 0) {
+    merge.transition().duration(transitionDuration).ease(d3.easeLinear)
+      .attr("cx", d => d.cx)
+      .attr("cy", d => d.cy)
+      .attr("r", d => d.r)
+      .style("fill-opacity", d => d.dimmed ? 0.15 : 0.75)
+      .style("stroke-opacity", d => d.dimmed ? 0.1 : 0.4);
+  } else {
+    merge
+      .attr("cx", d => d.cx)
+      .attr("cy", d => d.cy)
+      .attr("r", d => d.r)
+      .style("fill-opacity", d => d.dimmed ? 0.15 : 0.75)
+      .style("stroke-opacity", d => d.dimmed ? 0.1 : 0.4);
+  }
+
+  // --- Labels for large bubbles ---
+  const labelData = plotData.filter(d => d.r > 22);
+  const labels = g.selectAll("text.bubble-label")
+    .data(labelData, d => d.country_id);
+
+  labels.exit().remove();
+
+  labels.enter()
+    .append("text")
+    .attr("class", "bubble-label")
+    .attr("text-anchor", "middle")
+    .attr("dy", "0.35em")
+    .style("font-size", d => Math.max(9, d.r * 0.35) + "px")
+    .style("font-weight", "700")
+    .style("font-family", "var(--font-sans)")
+    .style("fill", "#fff")
+    .style("pointer-events", "none")
+    .style("text-shadow", "0 1px 2px rgba(0,0,0,0.3)")
+    .merge(labels)
+    .transition().duration(transitionDuration).ease(d3.easeLinear)
+    .attr("x", d => d.cx)
+    .attr("y", d => d.cy)
+    .text(d => d.iso3);
+
+  // --- Trails ---
+  if (state.trails && transitionDuration > 0) {
+    drawTrails(year);
+  }
+
+  // Update tooltip handlers
+  g.selectAll("circle.bubble")
+    .on("mouseover", function(event, d) {
+      d3.select(this)
+        .style("fill-opacity", 1)
+        .style("stroke", "var(--text)")
+        .style("stroke-width", 2)
+        .style("stroke-opacity", 0.8)
+        .attr("r", d.r * 1.15);
+
+      const tooltip = d3.select("#tooltip");
+      tooltip.select(".country").text(d.country_name);
+      tooltip.select("#tt-gdp").text("$" + d3.format(",.0f")(d.gdp_per_capita_ppp));
+      tooltip.select("#tt-pop").text(d3.format(",.1f")(d.population / 1e6) + "M");
+      tooltip.select("#tt-metric").text(d3.format(",.1f")(d[state.metric] || 0));
+      tooltip.classed("visible", true);
+
+      // Position tooltip
+      const [mx, my] = d3.pointer(event, document.getElementById("chart-container"));
+      const ttNode = tooltip.node();
+      const ttW = ttNode.offsetWidth;
+      const ttH = ttNode.offsetHeight;
+      let left = mx + 15;
+      let top = my - ttH / 2;
+      if (left + ttW > width) left = mx - ttW - 15;
+      if (top < 0) top = 5;
+      if (top + ttH > height) top = height - ttH - 5;
+      tooltip.style("left", left + "px").style("top", top + "px");
+    })
+    .on("mousemove", function(event) {
+      const [mx, my] = d3.pointer(event, document.getElementById("chart-container"));
+      const tooltip = d3.select("#tooltip");
+      const ttNode = tooltip.node();
+      const ttW = ttNode.offsetWidth;
+      const ttH = ttNode.offsetHeight;
+      let left = mx + 15;
+      let top = my - ttH / 2;
+      if (left + ttW > width) left = mx - ttW - 15;
+      if (top < 0) top = 5;
+      if (top + ttH > height) top = height - ttH - 5;
+      tooltip.style("left", left + "px").style("top", top + "px");
+    })
+    .on("mouseout", function() {
+      d3.select(this)
+        .style("fill-opacity", d => d.dimmed ? 0.15 : 0.75)
+        .style("stroke", "#fff")
+        .style("stroke-width", 0.5)
+        .style("stroke-opacity", d => d.dimmed ? 0.1 : 0.4)
+        .attr("r", d => d.r);
+      d3.select("#tooltip").classed("visible", false);
+    });
+}
+
+// --- Draw trail lines for each country ---
+function drawTrails(currentYear) {
+  // For each country visible, show a trail of the last N years
+  const trailYears = 15;
+  const startYear = Math.max(1960, currentYear - trailYears);
+
+  // Collect trail data
+  const trailLines = [];
+  state.countries.forEach(c => {
+    const points = [];
+    for (let y = startYear; y <= currentYear; y++) {
+      const yearData = state.yearData[y];
+      if (!yearData) continue;
+      const cd = yearData.find(d => d.country_id === c.id);
+      if (cd && cd.population > 0 && cd.gdp_per_capita_ppp > 0) {
+        const val = cd[state.metric] || 0;
+        points.push({
+          x: xScale(Math.max(state.logScale ? 300 : 0, cd.gdp_per_capita_ppp)),
+          y: yScale(Math.max(0, val)),
+          year: y,
+        });
+      }
+    }
+    if (points.length >= 2) {
+      trailLines.push({ id: c.id, points, color: colorScale(c.region_group) });
+    }
+  });
+
+  // Remove old trails
+  g.selectAll("polyline.trail").remove();
+
+  // Draw trail lines
+  const trailGroup = g.append("g").attr("class", "trails");
+
+  trailLines.forEach(line => {
+    const pts = line.points.map(p => `${p.x},${p.y}`).join(" ");
+    trailGroup.append("polyline")
+      .attr("class", "trail")
+      .attr("points", pts)
+      .style("fill", "none")
+      .style("stroke", line.color)
+      .style("stroke-width", 1)
+      .style("stroke-opacity", 0.25)
+      .style("pointer-events", "none");
+  });
+
+  // Small dots at oldest trail point
+  trailLines.forEach(line => {
+    const first = line.points[0];
+    trailGroup.append("circle")
+      .attr("cx", first.x)
+      .attr("cy", first.y)
+      .attr("r", 2)
+      .style("fill", line.color)
+      .style("fill-opacity", 0.5)
+      .style("pointer-events", "none");
+  });
+}
+
+// --- Update year display and slider ---
+function updateYearUI(year) {
+  document.getElementById("year-display").textContent = year;
+  document.getElementById("year-slider").value = year;
+  updateKPIs(year);
+}
+
+// --- Update KPI cards ---
+function updateKPIs(year) {
+  const summary = state.summary.find(s => s.year === year);
+  if (!summary) return;
+
+  const prevSummary = state.summary.find(s => s.year === year - 1);
+
+  document.getElementById("kpi-internet").textContent = 
+    summary.weighted_internet_pct ? summary.weighted_internet_pct.toFixed(1) + "%" : "—";
+  document.getElementById("kpi-mobile").textContent = 
+    summary.weighted_mobile_per_100 ? summary.weighted_mobile_per_100.toFixed(1) : "—";
+  document.getElementById("kpi-broadband").textContent = 
+    summary.weighted_broadband_per_100 ? summary.weighted_broadband_per_100.toFixed(1) : "—";
+  document.getElementById("kpi-countries").textContent = 
+    summary.countries_with_internet ? summary.countries_with_internet + " / 101" : "—";
+
+  if (prevSummary && summary.weighted_internet_pct) {
+    const delta = (summary.weighted_internet_pct - (prevSummary.weighted_internet_pct || 0));
+    document.getElementById("kpi-internet-change").textContent = 
+      delta >= 0 ? `↑ ${delta.toFixed(1)}pp` : `↓ ${Math.abs(delta).toFixed(1)}pp`;
+  }
+}
+
+// --- Region Legend ---
+function drawLegend() {
+  const legend = document.getElementById("region-legend");
+  legend.innerHTML = Object.entries(REGION_LABELS)
+    .map(([key, label]) => `
+      <span class="flex gap-sm" style="align-items:center; cursor:pointer; padding:2px 6px; border-radius:4px; ${state.highlightRegion === key ? 'background:var(--accent-light);' : ''}"
+            onclick="highlightRegion('${key}')" title="Click to filter by ${label}">
+        <span class="legend-dot" style="background:${REGION_COLORS[key]};"></span>
+        ${label}
+      </span>
+    `).join("");
+}
+
+// --- Controls ---
+function setYear(year) {
+  year = +year;
+  if (year !== state.year) {
+    state.year = year;
+    updateYearUI(year);
+    drawYear(year, 100);
+  }
+}
+
+function stepYear(delta) {
+  const newYear = Math.max(1960, Math.min(2023, state.year + delta));
+  setYear(newYear);
+}
+
+function selectMetric(metric, btn) {
+  state.metric = metric;
+
+  // Update button states
+  document.querySelectorAll("[data-metric]").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+
+  // Re-init with new metric
+  initChart();
+  drawYear(state.year, 0);
+  updateYearUI(state.year);
+}
+
+function togglePlay() {
+  state.playing = !state.playing;
+  const btn = document.getElementById("btn-play");
+  btn.textContent = state.playing ? "⏸ Pause" : "▶ Play";
+  btn.classList.toggle("active", state.playing);
+
+  if (state.playing) {
+    animateLoop();
+  } else if (state.timer) {
+    clearTimeout(state.timer);
+    state.timer = null;
+  }
+}
+
+function animateLoop() {
+  if (!state.playing) return;
+
+  const nextYear = state.year + 1;
+  if (nextYear > 2023) {
+    // Loop back to start
+    state.year = 1960;
+    updateYearUI(1960);
+    drawYear(1960, 200);
+    state.timer = setTimeout(animateLoop, 800);
+  } else {
+    state.year = nextYear;
+    updateYearUI(nextYear);
+    drawYear(nextYear, state.speed * 0.6);
+    state.timer = setTimeout(animateLoop, state.speed);
+  }
+}
+
+function setSpeed(speed) {
+  state.speed = +speed;
+  if (state.playing) {
+    if (state.timer) clearTimeout(state.timer);
+    state.timer = setTimeout(animateLoop, state.speed);
+  }
+}
+
+function toggleScale() {
+  state.logScale = !state.logScale;
+  document.getElementById("btn-log").textContent = state.logScale ? "Log Scale" : "Linear Scale";
+  document.getElementById("btn-log").classList.toggle("active", state.logScale);
+  initChart();
+  drawYear(state.year, 0);
+}
+
+function toggleTrails() {
+  state.trails = !state.trails;
+  const btn = document.getElementById("btn-trails");
+  btn.textContent = "Trails: " + (state.trails ? "On" : "Off");
+  btn.classList.toggle("active", state.trails);
+  if (!state.trails) {
+    g.selectAll("polyline.trail, .trails").remove();
+  }
+  drawYear(state.year, 100);
+}
+
+function cycleHighlight() {
+  const regions = Object.keys(REGION_LABELS);
+  const currentIdx = state.highlightRegion ? regions.indexOf(state.highlightRegion) : -1;
+  if (currentIdx >= regions.length - 1) {
+    state.highlightRegion = null;
+  } else {
+    state.highlightRegion = regions[currentIdx + 1];
+  }
+
+  const btn = document.getElementById("btn-highlight");
+  btn.textContent = state.highlightRegion 
+    ? REGION_LABELS[state.highlightRegion] 
+    : "All Regions";
+  btn.classList.toggle("active", !!state.highlightRegion);
+
+  drawLegend();
+  drawYear(state.year, 100);
+}
+
+function highlightRegion(region) {
+  if (state.highlightRegion === region) {
+    state.highlightRegion = null;
+  } else {
+    state.highlightRegion = region;
+  }
+
+  const btn = document.getElementById("btn-highlight");
+  btn.textContent = state.highlightRegion 
+    ? REGION_LABELS[state.highlightRegion] 
+    : "All Regions";
+  btn.classList.toggle("active", !!state.highlightRegion);
+
+  drawLegend();
+  drawYear(state.year, 100);
+}
+
+// --- Resize handler ---
+function handleResize() {
+  const container = document.getElementById("chart-container");
+  const bb = container.getBoundingClientRect();
+  width = bb.width;
+  height = Math.max(500, Math.min(650, width * 0.55));
+  initChart();
+  drawYear(state.year, 0);
+}
+
+// --- Initialize ---
+async function init() {
+  await loadData();
+  initChart();
+  drawLegend();
+  setYear(1990);
+
+  // Set initial year to a good starting point
+  document.getElementById("year-slider").value = 1990;
+
+  // Resize listener
+  window.addEventListener("resize", d3.timeout(handleResize, 200));
+}
+
+// Make control functions global for onclick handlers
+window.selectMetric = selectMetric;
+window.togglePlay = togglePlay;
+window.stepYear = stepYear;
+window.setYear = setYear;
+window.setSpeed = setSpeed;
+window.toggleScale = toggleScale;
+window.toggleTrails = toggleTrails;
+window.cycleHighlight = cycleHighlight;
+window.highlightRegion = highlightRegion;
+
+// Start
+init();
+return {REGION_COLORS,REGION_LABELS,METRIC_LABELS,state,svg,g,xScale,yScale,rScale,colorScale,margin,width,height,loadData,initChart,drawYear,drawTrails,updateYearUI,updateKPIs,drawLegend,setYear,stepYear,selectMetric,togglePlay,animateLoop,setSpeed,toggleScale,toggleTrails,cycleHighlight,highlightRegion,handleResize,init};
+}});
+
+</script>
+</head>
+<body>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link observablehq-link-active"><a href="./">Global Diffusion Observatory — H Heuristics</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link observablehq-link-active"><a href="./">Bubble Chart</a></li>
+    <li class="observablehq-link"><a href="./diffusion-curves">Diffusion Curves</a></li>
+    <li class="observablehq-link"><a href="./world-map">World Map</a></li>
+    <li class="observablehq-link"><a href="./data-explorer">Data Explorer</a></li>
+    <li class="observablehq-link"><a href="./about">About</a></li>
+  </ol>
+</nav>
+<script>{const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<div class="page-hero">
+  <h1>Global Diffusion of Innovations</h1>
+  <p>Technology adoption across 101 countries, 1960–2023. Each bubble is a country — sized by population, colored by region. Watch innovations spread across the world.</p>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-4" style="margin-bottom: 1rem;">
+  <div class="card" style="text-align: center;">
+    <div class="metric-label">Global Internet Adoption</div>
+    <div class="metric-value accent" id="kpi-internet">—</div>
+    <div class="metric-change up" id="kpi-internet-change"></div>
+  </div>
+  <div class="card" style="text-align: center;">
+    <div class="metric-label">Global Mobile Subscriptions</div>
+    <div class="metric-value accent" id="kpi-mobile">—</div>
+    <div class="metric-change up" id="kpi-mobile-change"></div>
+  </div>
+  <div class="card" style="text-align: center;">
+    <div class="metric-label">Fixed Broadband (per 100)</div>
+    <div class="metric-value accent" id="kpi-broadband">—</div>
+    <div class="metric-change up" id="kpi-broadband-change"></div>
+  </div>
+  <div class="card" style="text-align: center;">
+    <div class="metric-label">Countries with Internet</div>
+    <div class="metric-value accent" id="kpi-countries">—</div>
+    <div class="metric-change neutral" id="kpi-countries-change"></div>
+  </div>
+</div>
+<!-- Main Chart -->
+<div class="card" style="padding: 0.75rem 1rem 0.25rem; position: relative; overflow: hidden;">
+  <div class="flex-between" style="margin-bottom: 0.25rem; flex-wrap: wrap; gap: 0.4rem;">
+    <div class="flex gap-sm" style="align-items: center; flex-wrap: wrap;">
+      <span class="muted" style="font-size: 0.72rem; font-weight: 600;">Y-AXIS:</span>
+      <button class="btn btn-sm active" data-metric="internet_pct" onclick="selectMetric('internet_pct', this)">Internet %</button>
+      <button class="btn btn-sm" data-metric="mobile_per_100" onclick="selectMetric('mobile_per_100', this)">Mobile /100</button>
+      <button class="btn btn-sm" data-metric="broadband_per_100" onclick="selectMetric('broadband_per_100', this)">Broadband /100</button>
+    </div>
+    <div class="flex gap-sm" style="align-items: center;">
+      <button class="btn btn-sm" id="btn-log" onclick="toggleScale()" title="Toggle log/linear X-axis">Log Scale</button>
+      <button class="btn btn-sm" id="btn-trails" onclick="toggleTrails()" title="Show country trails">Trails: Off</button>
+      <button class="btn btn-sm" id="btn-highlight" onclick="cycleHighlight()" title="Cycle region highlight">All Regions</button>
+    </div>
+  </div>
+  <div id="chart-container" style="position: relative; width: 100%;">
+    <svg id="bubble-chart"></svg>
+    <div class="tooltip" id="tooltip">
+      <div class="country"></div>
+      <div class="stat"><span class="stat-label">GDP/Capita</span><span class="stat-val" id="tt-gdp"></span></div>
+      <div class="stat"><span class="stat-label">Population</span><span class="stat-val" id="tt-pop"></span></div>
+      <div class="stat"><span class="stat-label">Metric</span><span class="stat-val" id="tt-metric"></span></div>
+    </div>
+  </div>
+  <!-- Year Controls -->
+  <div style="padding: 0.3rem 0 0.5rem;">
+    <div class="flex-between gap-sm" style="align-items: center; flex-wrap: wrap;">
+      <div class="flex gap-sm" style="align-items: center;">
+        <button class="btn btn-sm" id="btn-play" onclick="togglePlay()">▶ Play</button>
+        <button class="btn btn-sm" onclick="stepYear(-1)">◀</button>
+        <button class="btn btn-sm" onclick="stepYear(1)">▶</button>
+        <span style="font-size: 0.75rem; color: var(--muted);">Speed:</span>
+        <select id="speed-select" onchange="setSpeed(this.value)" style="font-size: 0.72rem; padding: 0.15rem 0.3rem; border: 1px solid var(--border); border-radius: 4px; font-family: var(--font-sans);">
+          <option value="2000">Slow</option>
+          <option value="800" selected="">Normal</option>
+          <option value="300">Fast</option>
+          <option value="100">Turbo</option>
+        </select>
+      </div>
+      <div style="font-size: 1.8rem; font-weight: 900; color: var(--text); font-variant-numeric: tabular-nums;" id="year-display">1990</div>
+    </div>
+    <input type="range" id="year-slider" min="1960" max="2023" value="1990" step="1" oninput="setYear(this.value)" style="margin-top: 0.3rem;">
+  </div>
+  <!-- Region Legend -->
+  <div class="flex gap-md" style="flex-wrap: wrap; padding: 0.2rem 0 0.5rem; font-size: 0.7rem;" id="region-legend"></div>
+</div>
+<div class="grid grid-2" style="margin-top: 1rem;">
+  <div class="card">
+    <h3>About the Data</h3>
+    <p class="muted" style="margin:0; line-height: 1.6;">
+      Data covers <strong>101 countries</strong> from <strong>1960 to 2023</strong>. Technology adoption follows Rogers' S-curve diffusion pattern — early adopters (high-income nations) led, with developing countries catching up over time. The digital divide is visible in the spread between regions.
+    </p>
+    <p class="muted" style="margin:0.5rem 0 0; line-height: 1.6;">
+      <strong>GDP per capita</strong> (PPP, constant 2017 $) on the x-axis vs. <strong>technology adoption</strong> on the y-axis. Bubble size = population. Color = region. This format — pioneered by Hans Rosling's Gapminder — reveals the relationship between economic development and technology diffusion.
+    </p>
+  </div>
+  <div class="card">
+    <h3>Diffusion Theory</h3>
+    <p class="muted" style="margin:0; line-height: 1.6;">
+      <strong>Rogers' Diffusion of Innovations</strong> theory describes how new technologies spread through a population in an S-curve pattern: innovators → early adopters → early majority → late majority → laggards. This visualization lets you watch that process unfold globally.
+    </p>
+    <p class="muted" style="margin:0.5rem 0 0; line-height: 1.6;">
+      Key patterns to observe: <strong>leapfrogging</strong> (mobile phones bypassing fixed lines in Africa), <strong>the digital divide</strong> (Sub-Saharan Africa vs. Europe), and <strong>convergence</strong> (developing nations catching up as costs fall and infrastructure improves).
+    </p>
+  </div>
+</div>
+<div class="observablehq observablehq--block"><!--:a358ff19:--></div>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="next" href="./diffusion-curves"><span>Diffusion Curves</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-07-14T11:41:04">Jul 14, 2026</a>.</div>
+</footer>
+</div>
+</body>
+</html>

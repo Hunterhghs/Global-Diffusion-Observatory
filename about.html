@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Global Diffusion Observatory</title>
+<meta name="description" content="About the Global Diffusion of Innovations Observatory: methodology, data sources, and H Heuristics.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="hheuristics-tokens.css">
+<link rel="stylesheet" href="hheuristics-components.css">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<div class="masthead-wrap">
+  <header class="masthead">
+    <a href="index.html" class="masthead__brand">
+      <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="4" fill="#0c1929"/><text x="16" y="23" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="20" fill="#b89b5e">H</text></svg>
+      <div>H Heuristics<span class="masthead__brand-sub">Global Diffusion Observatory</span></div>
+    </a>
+    <nav class="masthead__nav">
+      <a href="index.html">Home</a>
+      <a href="theory.html">Theory</a>
+      <a href="observatory.html">Observatory</a>
+      <a href="curves.html">Curves</a>
+      <a href="about.html" class="active">About</a>
+    </nav>
+  </header>
+</div>
+
+<div class="page">
+  <header class="page-header">
+    <p class="page-header__kicker">Project Background</p>
+    <h1 class="page-header__heading">About the Observatory</h1>
+    <p class="page-header__subtitle">How this project was built, the methodology behind the data, and the team at H Heuristics.</p>
+  </header>
+</div>
+
+<div class="hairline hairline--gold"></div>
+
+<div class="page">
+  <section class="folio-section">
+    <span class="section-folio__number">01</span>
+    <div class="kicker-headline">
+      <p class="kicker-headline__kicker">The Project</p>
+      <h2 class="kicker-headline__heading">Why This Observatory Exists</h2>
+    </div>
+    <div class="prose-columns">
+      <p class="drop-cap">
+        The Global Diffusion of Innovations Observatory was built to make the abstract theory of technology diffusion <strong>visible and interactive</strong>. Rogers' framework is elegant, but its power only becomes apparent when you can watch the S-curves unfold in real data, country by country, year by year.
+      </p>
+      <p>
+        We chose the Gapminder format — pioneered by Hans Rosling — because it reveals the relationship between economic development and technology adoption in a way that static charts cannot. The animation shows countries <em>moving</em> through development space, tracing trajectories that reveal convergence, divergence, and leapfrogging.
+      </p>
+      <p>
+        This observatory is part of H Heuristics' broader work on economic diffusion, convergence dynamics, and development economics. Our research programme includes the D-Coefficient framework for measuring institutional diffusion capacity, Convergence Maps for visualizing development trajectories, and the Carpathian Crescent simulation engine for exploring counterfactual development paths.
+      </p>
+    </div>
+  </section>
+</div>
+
+<div class="hairline hairline--subtle"></div>
+
+<div class="page">
+  <section class="folio-section">
+    <span class="section-folio__number">02</span>
+    <div class="kicker-headline">
+      <p class="kicker-headline__kicker">Methodology</p>
+      <h2 class="kicker-headline__heading">Data &amp; Modelling Approach</h2>
+    </div>
+    <div class="content-prose">
+      <p>The dataset covers <strong>100 countries</strong> across <strong>64 years</strong> (1960–2023), generating 6,464 country-year observations. Three technology adoption indicators are tracked:</p>
+      <ul>
+        <li><strong>Internet Users</strong> (% of population) — from the first ARPANET connections in 1969 to near-universal access in developed nations</li>
+        <li><strong>Mobile Cellular Subscriptions</strong> (per 100 people) — from the first commercial networks in the early 1980s to the smartphone era</li>
+        <li><strong>Fixed Broadband Subscriptions</strong> (per 100 people) — from the DSL era (late 1990s) through fiber deployment</li>
+      </ul>
+
+      <h3>Modelling Approach</h3>
+      <p>Technology adoption trajectories are modelled using the <strong>Rogers S-curve (logistic function)</strong>, parameterized by country income group and documented adoption timelines:</p>
+      <ul>
+        <li><strong>High-income countries</strong> — Early adopters (internet: ~1990, mobile: ~1985), fast diffusion velocity, high adoption ceilings (internet: 97%, mobile: 145 per 100)</li>
+        <li><strong>Upper middle-income</strong> — Mid-range adopters (internet: ~1995), moderate diffusion velocity</li>
+        <li><strong>Lower middle-income</strong> — Later adopters (internet: ~2000), slower diffusion, lower ceilings</li>
+        <li><strong>Low-income</strong> — Latest adopters (internet: ~2002), slowest diffusion, lowest ceilings (internet: ~55%)</li>
+      </ul>
+
+      <p>Population data is based on UN World Population Prospects. GDP per capita (PPP, constant 2017 international dollars) follows World Bank trends. The model incorporates known diffusion anomalies — mobile leapfrogging in Africa, China's compressed adoption timeline, and the post-Soviet digital catch-up in Eastern Europe.</p>
+
+      <h3>Technology Stack</h3>
+      <p>The interactive visualizations are built with <strong>Observable Framework</strong> (v1.13.4) and <strong>D3.js</strong> (v7.9.0). The informational website uses the H Heuristics brand design system with Cormorant Garamond and Source Sans 3 typography. The entire site is served as a static site, deployable to any web host or GitHub Pages.</p>
+    </div>
+  </section>
+</div>
+
+<div class="hairline hairline--subtle"></div>
+
+<div class="page">
+  <section class="folio-section">
+    <span class="section-folio__number">03</span>
+    <div class="kicker-headline">
+      <p class="kicker-headline__kicker">References</p>
+      <h2 class="kicker-headline__heading">Core Literature</h2>
+    </div>
+    <div class="content-prose">
+      <ul>
+        <li><strong>Rogers, E.M. (1962).</strong> <em>Diffusion of Innovations.</em> New York: Free Press. The foundational text — now in its fifth edition (2003) and the second-most-cited book in the social sciences.</li>
+        <li><strong>Bass, F.M. (1969).</strong> "A New Product Growth Model for Consumer Durables." <em>Management Science,</em> 15(5), 215–227. The mathematical formalization of diffusion theory.</li>
+        <li><strong>Moore, G.A. (1991).</strong> <em>Crossing the Chasm.</em> New York: HarperBusiness. Identified the critical gap between early adopters and the early majority.</li>
+        <li><strong>Rosling, H. (2006).</strong> "The Best Stats You've Ever Seen." TED Talk. Popularized the animated bubble chart format used in this observatory.</li>
+        <li><strong>World Bank. (2024).</strong> <em>World Development Indicators.</em> Primary source for country metadata and economic indicators.</li>
+        <li><strong>ITU. (2024).</strong> <em>World Telecommunication/ICT Indicators Database.</em> Primary source for technology adoption timelines.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<div class="hairline hairline--gold"></div>
+
+<div class="page" style="text-align:center; padding: var(--space-10) 0;">
+  <p style="font-family:var(--font-display); font-size:var(--text-xl); color:var(--text-muted); margin-bottom:var(--space-6);">
+    H Heuristics &middot; Nottingham, UK &middot; <a href="https://hheuristics.com" style="color:var(--color-accent);">hheuristics.com</a>
+  </p>
+  <a href="observatory.html" class="btn btn--primary btn--lg">Explore the Observatory →</a>
+</div>
+
+<footer class="footer-brand">
+  <div class="page">
+    <div class="footer-brand__logo">H</div>
+    <p class="footer-brand__tagline">Market Research &amp; Economic Development Consulting</p>
+    <div style="display:flex; gap:var(--space-8); flex-wrap:wrap; margin: var(--space-6) 0;">
+      <div>
+        <p class="footer-brand__heading">Observatory</p>
+        <a href="index.html">Home</a><a href="theory.html">Theory</a><a href="observatory.html">Observatory</a><a href="curves.html">Curves</a><a href="about.html">About</a>
+      </div>
+    </div>
+    <div class="footer-brand__bottom">&copy; 2026 H Heuristics. Built with Observable Framework and D3.js.</div>
+  </div>
+</footer>
+</body>
+</html>

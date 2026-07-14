@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="generator" content="Observable Framework v1.13.4">
+<title>World Map | Global Diffusion Observatory — H Heuristics</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight,alt,wide.9b64840a.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight,alt,wide.9b64840a.css">
+<link rel="modulepreload" href="./_observablehq/client.9519fa98.js">
+<link rel="modulepreload" href="./_observablehq/runtime.607a8173.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.23790ac1.js">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --accent: #4269d0;
+    --accent-light: #e8edf8;
+    --accent2: #2e5bb8;
+    --warn: #dc3545;
+    --gold: #e6a817;
+    --green: #22c55e;
+    --border: #e5e7eb;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-serif: 'Source Serif 4', serif;
+  }
+
+  /* Region colors for Gapminder chart */
+  --region-africa: #FF6B35;
+  --region-asia: #004E89;
+  --region-europe: #1A936F;
+  --region-north-america: #9B5DE5;
+  --region-south-america: #F9C74F;
+  --region-oceania: #F15BB5;
+  --region-middle-east: #00B4D8;
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* --- Card --- */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.25rem 1.5rem;
+  }
+
+  /* --- Typography --- */
+  h1, h2, h3 { color: var(--text); font-weight: 700; }
+  h1 { font-size: 1.75rem; letter-spacing: -0.03em; }
+  h2 { font-size: 1.3rem; letter-spacing: -0.02em; }
+  h3 { font-size: 0.85rem; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+
+  /* --- Metrics --- */
+  .metric-value { font-size: 1.75rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .metric-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 0.2rem; }
+  .metric-change { font-size: 0.75rem; font-weight: 600; margin-top: 0.15rem; }
+  .metric-change.up { color: var(--green); }
+  .metric-change.neutral { color: var(--muted); }
+
+  /* --- Utility --- */
+  .muted { color: var(--muted); font-size: 0.82rem; }
+  .accent { color: var(--accent); }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .flex { display: flex; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .gap-sm { gap: 0.5rem; }
+  .gap-md { gap: 1rem; }
+
+  /* --- Buttons --- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.45rem 1rem; border-radius: var(--radius-sm);
+    font-size: 0.8rem; font-weight: 600; font-family: var(--font-sans);
+    border: 1px solid var(--border); background: #fff; color: var(--text);
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.active:hover { background: var(--accent2); }
+  .btn-sm { padding: 0.3rem 0.65rem; font-size: 0.72rem; }
+
+  /* --- Navigation --- */
+  nav { display: flex; gap: 0.15rem; flex-wrap: wrap; }
+  nav a {
+    color: var(--muted); font-size: 0.82rem; font-weight: 500;
+    padding: 0.4rem 0.85rem; border-radius: var(--radius-sm);
+    text-decoration: none; transition: all 0.15s;
+  }
+  nav a:hover { color: var(--accent); background: var(--accent-light); }
+  nav a[aria-current] { color: var(--accent); font-weight: 700; background: var(--accent-light); }
+
+  /* --- Page header --- */
+  .page-hero { text-align: center; padding: 1.5rem 0 0.5rem; }
+  .page-hero h1 { font-family: var(--font-serif); font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+  .page-hero p { color: var(--muted); max-width: 650px; margin: 0.4rem auto 0; font-size: 0.95rem; line-height: 1.55; }
+
+  /* --- Chart container --- */
+  .chart-container { position: relative; width: 100%; }
+  .chart-container svg { display: block; width: 100%; height: auto; }
+
+  /* --- Tooltip --- */
+  .tooltip {
+    position: absolute; pointer-events: none;
+    background: rgba(26, 26, 46, 0.94); color: #fff;
+    padding: 0.6rem 0.85rem; border-radius: 8px;
+    font-size: 0.78rem; line-height: 1.5; font-family: var(--font-sans);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index: 100;
+    max-width: 260px; opacity: 0; transition: opacity 0.15s;
+  }
+  .tooltip.visible { opacity: 1; }
+  .tooltip .country { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .tooltip .stat { display: flex; justify-content: space-between; gap: 1rem; }
+  .tooltip .stat-label { color: #a0a0b8; }
+  .tooltip .stat-val { font-weight: 600; }
+
+  /* --- Slider --- */
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; background: var(--border);
+    border-radius: 3px; outline: none; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2); cursor: pointer;
+  }
+
+  /* --- Legend --- */
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    display: inline-block; flex-shrink: 0;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    h1 { font-size: 1.3rem; }
+    .page-hero h1 { font-size: 1.5rem; }
+    .metric-value { font-size: 1.4rem; }
+    nav { gap: 0; }
+    nav a { font-size: 0.72rem; padding: 0.3rem 0.5rem; }
+  }
+</style>
+<script type="module">
+
+import "./_observablehq/client.9519fa98.js";
+
+</script>
+</head>
+<body>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Global Diffusion Observatory — H Heuristics</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./">Bubble Chart</a></li>
+    <li class="observablehq-link"><a href="./diffusion-curves">Diffusion Curves</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./world-map">World Map</a></li>
+    <li class="observablehq-link"><a href="./data-explorer">Data Explorer</a></li>
+    <li class="observablehq-link"><a href="./about">About</a></li>
+  </ol>
+</nav>
+<script>{const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<div class="page-hero">
+  <h1>Diffusion World Map</h1>
+  <p>Geographic view of technology adoption — watch innovation spread across the globe, year by year.</p>
+</div>
+<div class="card" style="text-align: center; padding: 3rem;">
+  <p class="muted">🌍 Full interactive world map coming soon. This page will feature a choropleth map with year animation showing technology adoption by country.</p>
+</div>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./diffusion-curves"><span>Diffusion Curves</span></a><a rel="next" href="./data-explorer"><span>Data Explorer</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-07-14T11:41:04">Jul 14, 2026</a>.</div>
+</footer>
+</div>
+</body>
+</html>

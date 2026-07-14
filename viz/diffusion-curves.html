@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="generator" content="Observable Framework v1.13.4">
+<title>Diffusion Curves | Global Diffusion Observatory — H Heuristics</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight,alt,wide.9b64840a.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight,alt,wide.9b64840a.css">
+<link rel="modulepreload" href="./_observablehq/client.9519fa98.js">
+<link rel="modulepreload" href="./_observablehq/runtime.607a8173.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.23790ac1.js">
+<link rel="modulepreload" href="./_npm/d3@7.9.0/080cf928.js">
+<link rel="modulepreload" href="./_npm/d3-array@3.2.4/b8e751b6.js">
+<link rel="modulepreload" href="./_npm/d3-axis@3.0.0/c662ea05.js">
+<link rel="modulepreload" href="./_npm/d3-brush@3.0.0/d162d8c6.js">
+<link rel="modulepreload" href="./_npm/d3-chord@3.0.1/5cedd0be.js">
+<link rel="modulepreload" href="./_npm/d3-color@3.1.0/65d51007.js">
+<link rel="modulepreload" href="./_npm/d3-contour@4.0.2/c576a91a.js">
+<link rel="modulepreload" href="./_npm/d3-delaunay@6.0.4/8b43826d.js">
+<link rel="modulepreload" href="./_npm/d3-dispatch@3.0.1/3fb06f14.js">
+<link rel="modulepreload" href="./_npm/d3-drag@3.0.0/20b76948.js">
+<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/097745a2.js">
+<link rel="modulepreload" href="./_npm/d3-ease@3.0.1/8683b012.js">
+<link rel="modulepreload" href="./_npm/d3-fetch@3.0.1/5c319046.js">
+<link rel="modulepreload" href="./_npm/d3-force@3.0.0/33924f3e.js">
+<link rel="modulepreload" href="./_npm/d3-format@3.1.2/8d67a1ae.js">
+<link rel="modulepreload" href="./_npm/d3-geo@3.1.1/8037bd0b.js">
+<link rel="modulepreload" href="./_npm/d3-hierarchy@3.1.2/a9ba0229.js">
+<link rel="modulepreload" href="./_npm/d3-interpolate@3.0.1/e0a47f97.js">
+<link rel="modulepreload" href="./_npm/d3-path@3.1.0/f9e9e0ab.js">
+<link rel="modulepreload" href="./_npm/d3-polygon@3.0.1/2da8eb3b.js">
+<link rel="modulepreload" href="./_npm/d3-quadtree@3.0.1/09002e01.js">
+<link rel="modulepreload" href="./_npm/d3-random@3.0.1/5108797c.js">
+<link rel="modulepreload" href="./_npm/d3-scale@4.0.2/c9f2571b.js">
+<link rel="modulepreload" href="./_npm/d3-scale-chromatic@3.1.0/f3c78e0d.js">
+<link rel="modulepreload" href="./_npm/d3-selection@3.0.0/28717d05.js">
+<link rel="modulepreload" href="./_npm/d3-shape@3.2.0/7c6e2a50.js">
+<link rel="modulepreload" href="./_npm/d3-time@3.1.0/3d1d57c6.js">
+<link rel="modulepreload" href="./_npm/d3-time-format@4.1.0/643581a8.js">
+<link rel="modulepreload" href="./_npm/d3-timer@3.0.1/e99232db.js">
+<link rel="modulepreload" href="./_npm/d3-transition@3.0.1/bd07fd9a.js">
+<link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/d09f7cc9.js">
+<link rel="modulepreload" href="./_npm/internmap@2.0.3/af036d7e.js">
+<link rel="modulepreload" href="./_npm/delaunator@5.1.0/7b06abe7.js">
+<link rel="modulepreload" href="./_npm/robust-predicates@3.0.3/b42f30a7.js">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --accent: #4269d0;
+    --accent-light: #e8edf8;
+    --accent2: #2e5bb8;
+    --warn: #dc3545;
+    --gold: #e6a817;
+    --green: #22c55e;
+    --border: #e5e7eb;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-serif: 'Source Serif 4', serif;
+  }
+
+  /* Region colors for Gapminder chart */
+  --region-africa: #FF6B35;
+  --region-asia: #004E89;
+  --region-europe: #1A936F;
+  --region-north-america: #9B5DE5;
+  --region-south-america: #F9C74F;
+  --region-oceania: #F15BB5;
+  --region-middle-east: #00B4D8;
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* --- Card --- */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.25rem 1.5rem;
+  }
+
+  /* --- Typography --- */
+  h1, h2, h3 { color: var(--text); font-weight: 700; }
+  h1 { font-size: 1.75rem; letter-spacing: -0.03em; }
+  h2 { font-size: 1.3rem; letter-spacing: -0.02em; }
+  h3 { font-size: 0.85rem; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+
+  /* --- Metrics --- */
+  .metric-value { font-size: 1.75rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .metric-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 0.2rem; }
+  .metric-change { font-size: 0.75rem; font-weight: 600; margin-top: 0.15rem; }
+  .metric-change.up { color: var(--green); }
+  .metric-change.neutral { color: var(--muted); }
+
+  /* --- Utility --- */
+  .muted { color: var(--muted); font-size: 0.82rem; }
+  .accent { color: var(--accent); }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .flex { display: flex; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .gap-sm { gap: 0.5rem; }
+  .gap-md { gap: 1rem; }
+
+  /* --- Buttons --- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.45rem 1rem; border-radius: var(--radius-sm);
+    font-size: 0.8rem; font-weight: 600; font-family: var(--font-sans);
+    border: 1px solid var(--border); background: #fff; color: var(--text);
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.active:hover { background: var(--accent2); }
+  .btn-sm { padding: 0.3rem 0.65rem; font-size: 0.72rem; }
+
+  /* --- Navigation --- */
+  nav { display: flex; gap: 0.15rem; flex-wrap: wrap; }
+  nav a {
+    color: var(--muted); font-size: 0.82rem; font-weight: 500;
+    padding: 0.4rem 0.85rem; border-radius: var(--radius-sm);
+    text-decoration: none; transition: all 0.15s;
+  }
+  nav a:hover { color: var(--accent); background: var(--accent-light); }
+  nav a[aria-current] { color: var(--accent); font-weight: 700; background: var(--accent-light); }
+
+  /* --- Page header --- */
+  .page-hero { text-align: center; padding: 1.5rem 0 0.5rem; }
+  .page-hero h1 { font-family: var(--font-serif); font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+  .page-hero p { color: var(--muted); max-width: 650px; margin: 0.4rem auto 0; font-size: 0.95rem; line-height: 1.55; }
+
+  /* --- Chart container --- */
+  .chart-container { position: relative; width: 100%; }
+  .chart-container svg { display: block; width: 100%; height: auto; }
+
+  /* --- Tooltip --- */
+  .tooltip {
+    position: absolute; pointer-events: none;
+    background: rgba(26, 26, 46, 0.94); color: #fff;
+    padding: 0.6rem 0.85rem; border-radius: 8px;
+    font-size: 0.78rem; line-height: 1.5; font-family: var(--font-sans);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index: 100;
+    max-width: 260px; opacity: 0; transition: opacity 0.15s;
+  }
+  .tooltip.visible { opacity: 1; }
+  .tooltip .country { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .tooltip .stat { display: flex; justify-content: space-between; gap: 1rem; }
+  .tooltip .stat-label { color: #a0a0b8; }
+  .tooltip .stat-val { font-weight: 600; }
+
+  /* --- Slider --- */
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; background: var(--border);
+    border-radius: 3px; outline: none; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2); cursor: pointer;
+  }
+
+  /* --- Legend --- */
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    display: inline-block; flex-shrink: 0;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    h1 { font-size: 1.3rem; }
+    .page-hero h1 { font-size: 1.5rem; }
+    .metric-value { font-size: 1.4rem; }
+    nav { gap: 0; }
+    nav a { font-size: 0.72rem; padding: 0.3rem 0.5rem; }
+  }
+</style>
+<script type="module">
+
+import {define} from "./_observablehq/client.9519fa98.js";
+import {registerFile} from "./_observablehq/stdlib.23790ac1.js";
+
+registerFile("./diffusion_data.json", {"name":"./diffusion_data.json","mimeType":"application/json","path":"./_file/diffusion_data.71af4842.json","lastModified":1784021896905,"size":1793298});
+
+define({id: "2968f26e", inputs: ["d3","FileAttachment","prompt"], outputs: ["curveColors","curveData","selectedCountries","curveMetric","loadCurveData","drawCountryTags","removeCountry","addCountry","drawCurves","updateCurves"], body: (d3,FileAttachment,prompt) => {
+// Diffusion Curves page
+const curveColors = d3.schemeCategory10;
+let curveData = [];
+let selectedCountries = ["USA", "CHN", "IND", "NGA", "BRA", "DEU"];
+let curveMetric = "internet_pct";
+
+async function loadCurveData() {
+  curveData = await FileAttachment("./diffusion_data.json").json();
+}
+
+function drawCountryTags() {
+  const container = document.getElementById("country-tags");
+  container.innerHTML = selectedCountries.map(cid => {
+    const c = curveData.find(d => d.country_id === cid);
+    const name = c ? c.country_name : cid;
+    return `<span class="btn btn-sm active" style="cursor:default;">${name} <span style="cursor:pointer;margin-left:4px;" onclick="removeCountry('${cid}')">×</span></span>`;
+  }).join("");
+}
+
+function removeCountry(cid) {
+  selectedCountries = selectedCountries.filter(c => c !== cid);
+  updateCurves();
+}
+
+function addCountry() {
+  const cid = prompt("Enter country code (e.g., USA, CHN, IND, NGA, BRA, DEU):");
+  if (cid && !selectedCountries.includes(cid.toUpperCase())) {
+    selectedCountries.push(cid.toUpperCase());
+    updateCurves();
+  }
+}
+
+function drawCurves() {
+  const container = document.getElementById("curve-chart-container");
+  const bb = container.getBoundingClientRect();
+  const width = bb.width;
+  const height = 500;
+  const margin = { top: 20, right: 150, bottom: 40, left: 55 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const svg = d3.select("#curve-chart")
+    .attr("width", width)
+    .attr("height", height);
+  svg.selectAll("*").remove();
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Scales
+  const xScale = d3.scaleLinear().domain([1960, 2023]).range([0, innerW]);
+  const yExtent = curveMetric === "mobile_per_100" ? [0, 160] : 
+                  curveMetric === "broadband_per_100" ? [0, 55] : [0, 100];
+  const yScale = d3.scaleLinear().domain(yExtent).range([innerH, 0]);
+
+  // Axes
+  g.append("g").attr("transform", `translate(0,${innerH})`)
+    .call(d3.axisBottom(xScale).tickFormat(d3.format("d")).ticks(12))
+    .selectAll("text").style("font-size","10px").style("fill","var(--muted)");
+
+  g.append("g").call(d3.axisLeft(yScale).ticks(8))
+    .selectAll("text").style("font-size","10px").style("fill","var(--muted)");
+
+  // Rogers adopter category bands
+  const adopterZones = [
+    { label: "Innovators", xStart: 0, xEnd: 0.025, color: "#4269D0", opacity: 0.05 },
+    { label: "Early Adopters", xStart: 0.025, xEnd: 0.16, color: "#4269D0", opacity: 0.08 },
+    { label: "Early Majority", xStart: 0.16, xEnd: 0.50, color: "#4269D0", opacity: 0.11 },
+    { label: "Late Majority", xStart: 0.50, xEnd: 0.84, color: "#4269D0", opacity: 0.08 },
+    { label: "Laggards", xStart: 0.84, xEnd: 1.0, color: "#4269D0", opacity: 0.05 },
+  ];
+
+  // Draw S-curve reference
+  const refLine = d3.line()
+    .x(d => xScale(d.year))
+    .y(d => yScale(d.value));
+
+  // Reference logistic curve
+  const refPoints = [];
+  for (let t = -5; t <= 5; t += 0.1) {
+    const year = 1995 + t * 3;
+    if (year >= 1960 && year <= 2023) {
+      refPoints.push({ year, value: 100 / (1 + Math.exp(-t)) });
+    }
+  }
+  g.append("path").datum(refPoints).attr("d", refLine)
+    .style("fill", "none").style("stroke", "#ccc")
+    .style("stroke-width", 1.5).style("stroke-dasharray", "6,4")
+    .style("opacity", 0.5);
+
+  // Country lines
+  const line = d3.line()
+    .x(d => xScale(d.year))
+    .y(d => yScale(Math.max(0, d[curveMetric] || 0)));
+
+  selectedCountries.forEach((cid, i) => {
+    const countryData = curveData.filter(d => d.country_id === cid).sort((a, b) => a.year - b.year);
+    if (countryData.length === 0) return;
+
+    const color = curveColors[i % 10];
+    
+    g.append("path").datum(countryData).attr("d", line)
+      .style("fill", "none").style("stroke", color)
+      .style("stroke-width", 2.5).style("stroke-linejoin", "round");
+
+    // Label at end of line
+    const last = countryData[countryData.length - 1];
+    g.append("text")
+      .attr("x", xScale(last.year) + 5)
+      .attr("y", yScale(Math.max(0, last[curveMetric] || 0)))
+      .attr("dy", "0.35em")
+      .style("font-size", "11px").style("font-weight", "600")
+      .style("font-family", "var(--font-sans)").style("fill", color)
+      .text(last.country_name);
+  });
+}
+
+async function updateCurves() {
+  if (curveData.length === 0) await loadCurveData();
+  curveMetric = document.getElementById("curve-metric")?.value || "internet_pct";
+  drawCountryTags();
+  drawCurves();
+}
+
+// Initialize
+(async () => {
+  await loadCurveData();
+  drawCountryTags();
+  drawCurves();
+  window.removeCountry = removeCountry;
+  window.addCountry = addCountry;
+  window.updateCurves = updateCurves;
+})();
+return {curveColors,curveData,selectedCountries,curveMetric,loadCurveData,drawCountryTags,removeCountry,addCountry,drawCurves,updateCurves};
+}});
+
+</script>
+</head>
+<body>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Global Diffusion Observatory — H Heuristics</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./">Bubble Chart</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./diffusion-curves">Diffusion Curves</a></li>
+    <li class="observablehq-link"><a href="./world-map">World Map</a></li>
+    <li class="observablehq-link"><a href="./data-explorer">Data Explorer</a></li>
+    <li class="observablehq-link"><a href="./about">About</a></li>
+  </ol>
+</nav>
+<script>{const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<div class="page-hero">
+  <h1>Diffusion S-Curves</h1>
+  <p>Rogers' classic S-curve pattern of innovation adoption — select countries and metrics to compare adoption trajectories.</p>
+</div>
+<div class="card" style="margin-bottom: 1rem;">
+  <div class="flex gap-sm" style="flex-wrap: wrap; align-items: center;">
+    <span class="muted" style="font-size: 0.72rem; font-weight: 600;">METRIC:</span>
+    <select id="curve-metric" onchange="updateCurves()" style="font-size:0.8rem; padding:0.3rem 0.5rem; border:1px solid var(--border); border-radius:6px; font-family:var(--font-sans);">
+      <option value="internet_pct">Internet Users (%)</option>
+      <option value="mobile_per_100">Mobile Subscriptions (per 100)</option>
+      <option value="broadband_per_100">Broadband Subscriptions (per 100)</option>
+    </select>
+    <span class="muted" style="font-size: 0.72rem; font-weight: 600; margin-left: 0.5rem;">COUNTRIES:</span>
+    <div id="country-tags" class="flex gap-sm" style="flex-wrap: wrap;"></div>
+    <button class="btn btn-sm" onclick="addCountry()">+ Add Country</button>
+  </div>
+</div>
+<div class="card">
+  <div id="curve-chart-container" style="width: 100%;">
+    <svg id="curve-chart"></svg>
+  </div>
+</div>
+<div class="card" style="margin-top: 1rem;">
+  <h3>Understanding S-Curves</h3>
+  <p class="muted" style="margin:0; line-height:1.6;">
+    The S-curve (logistic function) is the signature pattern of technology diffusion. Adoption starts slowly among <strong>innovators</strong> (2.5%), accelerates through <strong>early adopters</strong> (13.5%) and <strong>early majority</strong> (34%), then slows as the <strong>late majority</strong> (34%) and <strong>laggards</strong> (16%) adopt. The steepness and timing of the curve reveals a country's position in the global diffusion cascade.
+  </p>
+</div>
+<div class="observablehq observablehq--block"><!--:2968f26e:--></div>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./"><span>Global Diffusion Observatory — H Heuristics</span></a><a rel="next" href="./world-map"><span>World Map</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-07-14T11:41:04">Jul 14, 2026</a>.</div>
+</footer>
+</div>
+</body>
+</html>

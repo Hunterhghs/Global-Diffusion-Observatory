@@ -1,0 +1,13 @@
+# H Heuristics — Global Diffusion Observatory
+# https://github.com/Hunterhghs/Global-Diffusion-Observatory
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
