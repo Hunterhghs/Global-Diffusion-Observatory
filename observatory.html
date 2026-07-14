@@ -350,9 +350,9 @@
 
     <!-- Year Controls -->
     <div class="year-controls">
-      <button class="ctrl-btn play-btn" id="btn-play" style="font-size:0.8rem;">▶ Play</button>
-      <button class="ctrl-btn" onclick="stepYear(-1)" style="font-size:0.85rem;">◀</button>
-      <button class="ctrl-btn" onclick="stepYear(1)" style="font-size:0.85rem;">▶</button>
+      <button class="ctrl-btn play-btn" id="btn-play" title="Play/Pause"><svg id="play-icon" width="14" height="14" viewBox="0 0 14 14" style="display:block;"><polygon points="3,1 13,7 3,13" fill="currentColor"/></svg><svg id="pause-icon" width="14" height="14" viewBox="0 0 14 14" style="display:none;"><rect x="2" y="1" width="3" height="12" rx="0.5" fill="currentColor"/><rect x="9" y="1" width="3" height="12" rx="0.5" fill="currentColor"/></svg></button>
+      <button class="ctrl-btn" onclick="stepYear(-1)" title="Step Back" style="padding:0.35rem 0.55rem;"><svg width="12" height="12" viewBox="0 0 12 12"><polygon points="9,1 3,6 9,11" fill="currentColor"/></svg></button>
+      <button class="ctrl-btn" onclick="stepYear(1)" title="Step Forward" style="padding:0.35rem 0.55rem;"><svg width="12" height="12" viewBox="0 0 12 12"><polygon points="3,1 9,6 3,11" fill="currentColor"/></svg></button>
       <span style="font-size:0.7rem;color:var(--text-muted);margin-left:0.3rem;">Speed:</span>
       <select id="speed-select" style="font-size:0.7rem;padding:0.2rem 0.3rem;border:1px solid var(--border-default);border-radius:4px;font-family:var(--font-body);">
         <option value="2000">Slow</option>
@@ -686,7 +686,9 @@ function selectMetric(metric, btn) {
 function togglePlay() {
   state.playing = !state.playing;
   const btn = document.getElementById("btn-play");
-  btn.textContent = state.playing ? "⏸ Pause" : "▶ Play";
+  btn.innerHTML = state.playing
+    ? '<svg id="play-icon" width="14" height="14" viewBox="0 0 14 14" style="display:none;"><polygon points="3,1 13,7 3,13" fill="currentColor"/></svg><svg id="pause-icon" width="14" height="14" viewBox="0 0 14 14" style="display:block;"><rect x="2" y="1" width="3" height="12" rx="0.5" fill="currentColor"/><rect x="9" y="1" width="3" height="12" rx="0.5" fill="currentColor"/></svg>'
+    : '<svg id="play-icon" width="14" height="14" viewBox="0 0 14 14" style="display:block;"><polygon points="3,1 13,7 3,13" fill="currentColor"/></svg><svg id="pause-icon" width="14" height="14" viewBox="0 0 14 14" style="display:none;"><rect x="2" y="1" width="3" height="12" rx="0.5" fill="currentColor"/><rect x="9" y="1" width="3" height="12" rx="0.5" fill="currentColor"/></svg>';
   btn.classList.toggle("active-ctrl", state.playing);
   if (state.playing) animateLoop();
   else if (state.timer) { clearTimeout(state.timer); state.timer = null; }

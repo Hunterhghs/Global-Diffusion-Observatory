@@ -319,6 +319,11 @@
 .insight-card__icon {
   font-size: 1.5rem;
   margin-bottom: var(--space-3);
+  color: var(--color-brand);
+}
+
+.insight-card__icon svg {
+  display: block;
 }
 
 .insight-card__heading {
@@ -549,6 +554,12 @@
   margin: 0;
 }
 
+
+/* ── Flag Dot ── */
+.flag-dot {
+  display: inline-block;
+  vertical-align: middle;
+}
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .masthead {
