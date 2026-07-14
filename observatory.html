@@ -355,10 +355,10 @@
       <button class="ctrl-btn" onclick="stepYear(1)" title="Step Forward" style="padding:0.35rem 0.55rem;"><svg width="12" height="12" viewBox="0 0 12 12"><polygon points="3,1 9,6 3,11" fill="currentColor"/></svg></button>
       <span style="font-size:0.7rem;color:var(--text-muted);margin-left:0.3rem;">Speed:</span>
       <select id="speed-select" style="font-size:0.7rem;padding:0.2rem 0.3rem;border:1px solid var(--border-default);border-radius:4px;font-family:var(--font-body);">
-        <option value="2000">Slow</option>
-        <option value="800" selected>Normal</option>
-        <option value="300">Fast</option>
-        <option value="100">Turbo</option>
+        <option value="700">Slow</option>
+        <option value="400" selected>Normal</option>
+        <option value="200">Fast</option>
+        <option value="60">Turbo</option>
       </select>
       <div style="flex:1;"></div>
       <div class="year-display" id="year-display">1990</div>
@@ -528,7 +528,7 @@ function initChart() {
 // --- Draw Bubbles ---
 function drawYear(year, transitionDuration = 0) {
   const data = state.yearData[year] || [];
-  if (data.length === 0) return;
+  if (data.length === 0) return null;
 
   const iw = width - margin.left - margin.right;
   const ih = height - margin.top - margin.bottom;
@@ -616,6 +616,7 @@ function drawYear(year, transitionDuration = 0) {
         .style("stroke", "#fff").style("stroke-width", 0.5)
         .style("stroke-opacity", d => d.dimmed ? 0.1 : 0.4).attr("r", d => d.r);
       d3.select("#tooltip").classed("visible", false);
+  return t;
     });
 }
 
@@ -658,7 +659,7 @@ function updateKPIs(year) {
   const ps = state.summary.find(x => x.year === year - 1);
   if (ps && s.weighted_internet_pct) {
     const d = s.weighted_internet_pct - (ps.weighted_internet_pct || 0);
-    document.getElementById("kpi-internet-change").textContent = d >= 0 ? `↑ ${d.toFixed(1)}pp` : `↓ ${Math.abs(d).toFixed(1)}pp`;
+    document.getElementById("kpi-internet-change").textContent = d >= 0 ? `+${d.toFixed(1)}pp` : `${d.toFixed(1)}pp`;
   }
 }
 
@@ -698,15 +699,31 @@ function animateLoop() {
   if (!state.playing) return;
   const ny = state.year + 1;
   if (ny > 2023) {
-    state.year = 1960; updateYearUI(1960); drawYear(1960, 200);
-    state.timer = setTimeout(animateLoop, 800);
+    state.year = 1960; updateYearUI(1960); drawYear(1960, 0);
+    state.timer = setTimeout(() => animateLoop(), 400);
   } else {
-    state.year = ny; updateYearUI(ny); drawYear(ny, state.speed * 0.6);
-    state.timer = setTimeout(animateLoop, state.speed);
+    state.year = ny; updateYearUI(ny);
+    // Chain: start next year as soon as this transition ends (smooth flow)
+    const t = drawYear(ny, state.speed);
+    if (t) {
+      t.on("end", () => { if (state.playing) animateLoop(); });
+    } else {
+      state.timer = setTimeout(() => animateLoop(), state.speed);
+    }
   }
 }
 
-function setSpeed(s) { state.speed = +s; if (state.playing) { clearTimeout(state.timer); state.timer = setTimeout(animateLoop, state.speed); } }
+function setSpeed(s) {
+  state.speed = +s;
+  if (state.playing) {
+    if (state.timer) { clearTimeout(state.timer); state.timer = null; }
+    // Interrupt current transitions and jump to next year cleanly
+    g.selectAll("circle.bubble").interrupt();
+    g.selectAll("text.bubble-label").interrupt();
+    g.selectAll("polyline.trail").interrupt();
+    animateLoop();
+  }
+}
 
 function toggleScale() {
   state.logScale = !state.logScale;
